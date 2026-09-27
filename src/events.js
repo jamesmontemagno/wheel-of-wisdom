@@ -34,7 +34,7 @@ export const THEME_EVENTS = Object.freeze([
     id: 'st-patricks',
     name: 'St. Patrick’s Day',
     emoji: '🍀',
-    description: 'A lucky little board for game night.',
+    description: 'A lucky little board for the week around St. Patrick’s Day.',
     from: [3, 14],
     to: [3, 18],
   }),
@@ -76,7 +76,7 @@ export const THEME_EVENTS = Object.freeze([
     emoji: '❄️',
     description: 'Snowy details for the Northern Hemisphere winter.',
     from: [12, 1],
-    to: [2, 29],
+    to: [2, 29], // Includes February 28 every year and leap day when it exists.
   }),
   Object.freeze({
     id: 'christmas',
