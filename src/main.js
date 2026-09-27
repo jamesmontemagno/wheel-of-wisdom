@@ -8,6 +8,7 @@ import {
 } from './game.js'
 import { createStorage, recordGame, leaderboard } from './storage.js'
 import { setupPWA } from './pwa.js'
+import { CLASSIC_THEME, activeThemeEvents, themeForId } from './events.js'
 
 const app = document.querySelector('#app')
 const preferenceKeys = {
@@ -77,6 +78,7 @@ let seenPuzzleIds = usablePuzzleHistory(storage.loadSeenPuzzles())
 let gameId
 let gameRecorded = false
 let lobbyPage = 'play'
+let selectedEventId = CLASSIC_THEME.id
 let storageFailed = false
 let spinning = false
 let wheelAngle = 0
@@ -215,6 +217,11 @@ function shell(content) {
 
 function renderLobby() {
   lobbyPage = 'play'
+  const activeEvents = activeThemeEvents()
+  if (selectedEventId !== CLASSIC_THEME.id && !activeEvents.some((event) => event.id === selectedEventId)) {
+    selectedEventId = CLASSIC_THEME.id
+  }
+  const themeChoices = [CLASSIC_THEME, ...activeEvents]
   shell(`<section class="lobby">
     <div class="lobby-intro">
       <div class="eyebrow"><span class="tiny-star">✦</span> YOUR POCKET-SIZED GAME NIGHT</div>
@@ -236,6 +243,11 @@ function renderLobby() {
         <button type="button" data-count="2" aria-pressed="${playerCount === 2}" class="${playerCount === 2 ? 'selected' : ''}">${icon('people')} 2 players</button>
         <button type="button" data-count="3" aria-pressed="${playerCount === 3}" class="${playerCount === 3 ? 'selected' : ''}">${icon('people')} 3 players</button>
       </div></fieldset>
+      <fieldset class="theme-picker"><legend>Choose your board</legend><div class="theme-choices">
+        ${themeChoices.map((theme) => `<button type="button" class="theme-choice ${selectedEventId === theme.id ? 'selected' : ''}" data-event-id="${theme.id}" aria-pressed="${selectedEventId === theme.id}">
+          <span class="theme-choice-emoji" aria-hidden="true">${theme.emoji}</span><span><strong>${escape(theme.name)}</strong><small>${escape(theme.description)}</small></span>
+        </button>`).join('')}
+      </div><p class="theme-note">Seasonal and holiday boards appear on their dates.</p></fieldset>
       <form id="setup-form">
         <div class="player-inputs">${Array.from({ length: playerCount }, (_, i) => `<label class="player-field"><span class="player-avatar color-${i}">${String(i + 1).padStart(2, '0')}</span><span class="field-content"><span>PLAYER ${i + 1}</span><input name="player-${i}" aria-label="Player ${i + 1} name" maxlength="24" autocomplete="off" placeholder="Player ${i + 1}" value="${escape(names[i])}"></span><span class="field-spark" aria-hidden="true">${['✳', '✦', '✿'][i]}</span></label>`).join('')}</div>
         <div class="setup-note"><span aria-hidden="true">✧</span><span>New puzzles. Random categories.<br>A different game, every single time.</span></div>
@@ -258,10 +270,18 @@ function renderLobby() {
       document.querySelector(`[data-count="${playerCount}"]`).focus()
     }
   })
+  document.querySelectorAll('[data-event-id]').forEach((button) => {
+    button.onclick = () => {
+      selectedEventId = button.dataset.eventId
+      renderLobby()
+      document.querySelector(`[data-event-id="${selectedEventId}"]`).focus()
+    }
+  })
   document.querySelector('#setup-form').onsubmit = (event) => {
     event.preventDefault()
     readNames()
     game = createGame(names.slice(0, playerCount).map((name, i) => name.trim() || `Player ${i + 1}`), Math.random, seenPuzzleIds)
+    game.eventId = selectedEventId
     rememberPuzzles()
     gameId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`
     gameRecorded = false
@@ -364,8 +384,10 @@ function boardMarkup() {
   const longest = Math.max(...words.map((word) => word.length))
   const isBonus = BONUS_PHASES.includes(game.phase)
   const showBonusLetters = ['bonus-pick', 'bonus-countdown', 'bonus-solve'].includes(game.phase)
-  return `<section class="puzzle-section" aria-label="Puzzle board">
-    <div class="puzzle-heading"><span class="category"><span aria-hidden="true">✦</span> ${escape(game.puzzle.category)}</span><span class="puzzle-meta">${isBonus ? 'THE FINAL CHALLENGE' : `${game.puzzle.phrase.replace(/[^A-Z]/gi, '').length} LETTERS`}</span></div>
+  const theme = themeForId(game.eventId)
+  return `<section class="puzzle-section" data-event="${theme.id}" aria-label="Puzzle board">
+    <div class="puzzle-heading"><span class="category"><span aria-hidden="true">${theme.emoji}</span> ${escape(game.puzzle.category)}</span><span class="puzzle-meta">${isBonus ? 'THE FINAL CHALLENGE' : `${game.puzzle.phrase.replace(/[^A-Z]/gi, '').length} LETTERS`}</span></div>
+    ${theme.id !== CLASSIC_THEME.id ? `<div class="event-board-label"><span aria-hidden="true">${theme.emoji}</span> ${escape(theme.name)} event board</div>` : ''}
     ${showBonusLetters ? bonusLetterTrayMarkup() : ''}
     <div class="puzzle-board" style="--longest-word:${longest}">
       <div class="puzzle-words">${words.map((word) => `<div class="puzzle-word">${[...word].map((letter) => {
@@ -379,8 +401,10 @@ function boardMarkup() {
 
 // The bonus puzzle stays hidden until the envelope is locked in.
 function sealedBoardMarkup() {
-  return `<section class="puzzle-section sealed-board" aria-label="Puzzle board">
-    <div class="puzzle-heading"><span class="category"><span aria-hidden="true">✦</span> BONUS PUZZLE</span><span class="puzzle-meta">SEALED</span></div>
+  const theme = themeForId(game.eventId)
+  return `<section class="puzzle-section sealed-board" data-event="${theme.id}" aria-label="Puzzle board">
+    <div class="puzzle-heading"><span class="category"><span aria-hidden="true">${theme.emoji}</span> BONUS PUZZLE</span><span class="puzzle-meta">SEALED</span></div>
+    ${theme.id !== CLASSIC_THEME.id ? `<div class="event-board-label"><span aria-hidden="true">${theme.emoji}</span> ${escape(theme.name)} event board</div>` : ''}
     <div class="puzzle-board sealed"><p>${icon('gift')}<span>${game.phase === 'bonus-category' ? 'Choose a category to set your bonus puzzle.' : 'Your bonus puzzle stays covered until your envelope is locked in. Spin first!'}</span></p></div>
   </section>`
 }
