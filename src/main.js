@@ -332,17 +332,17 @@ function renderHistory() {
 function confirmClearHistory() {
   const dialog = showDialog('Delete past history?', `<p>This permanently removes completed games and leaderboard scores from this device. Saved player names and puzzle boards are not affected.</p><button class="button button-primary" id="confirm-clear-history" type="button">Delete history</button><button class="text-button" type="button" data-close>Keep history</button>`)
   dialog.querySelector('#confirm-clear-history').onclick = async () => {
-   dialog.close()
-   try {
-     await historyMigration
-     await Promise.allSettled([...pendingNativeHistorySaves])
-     if (isNativeHost) await window.__wheelOfWisdomBridge.clearHistory()
-     if (!storage.clearHistory()) throw new Error('The browser could not clear saved history.')
-     history = []
-     renderHistory()
-   } catch {
-     showDialog('History was not deleted', '<p>There was a problem removing saved history. Please try again.</p><button class="button button-primary" data-close>Got it</button>')
-   }
+    dialog.close()
+    try {
+      await historyMigration
+      await Promise.allSettled([...pendingNativeHistorySaves])
+      if (isNativeHost) await window.__wheelOfWisdomBridge.clearHistory()
+      if (!storage.clearHistory()) throw new Error('The browser could not clear saved history.')
+      history = []
+      renderHistory()
+    } catch {
+      showDialog('History was not deleted', '<p>There was a problem removing saved history. Please try again.</p><button class="button button-primary" data-close>Got it</button>')
+    }
   }
 }
 
