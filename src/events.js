@@ -88,14 +88,16 @@ export const THEME_EVENTS = Object.freeze([
   }),
 ])
 
+const monthDayNumber = ([month, day]) => (month - 1) * 100 + day
+
 export function activeThemeEvents(date = new Date()) {
-  const monthDay = date.getMonth() * 100 + date.getDate()
+  const today = monthDayNumber([date.getMonth() + 1, date.getDate()])
   return THEME_EVENTS.filter(({ from, to }) => {
-    const start = (from[0] - 1) * 100 + from[1]
-    const end = (to[0] - 1) * 100 + to[1]
+    const start = monthDayNumber(from)
+    const end = monthDayNumber(to)
     return start <= end
-      ? monthDay >= start && monthDay <= end
-      : monthDay >= start || monthDay <= end
+      ? today >= start && today <= end
+      : today >= start || today <= end
   })
 }
 
