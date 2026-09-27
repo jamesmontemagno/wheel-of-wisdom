@@ -6,6 +6,7 @@ export const CLASSIC_THEME = Object.freeze({
 })
 
 export const THEME_EVENTS = Object.freeze([
+  // New Year starts on December 26, intentionally overlapping Christmas Week.
   Object.freeze({
     id: 'new-year',
     name: 'New Year',
