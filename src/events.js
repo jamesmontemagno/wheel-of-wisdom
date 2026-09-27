@@ -96,7 +96,6 @@ export const THEME_EVENTS = Object.freeze([
   event('ireland-bloomsday', 'Bloomsday', '📜', 'A literary celebration across Ireland.', [6, 16], [6, 17], ['IE']),
   event('new-zealand-matariki', 'Matariki Season', '✨', 'Celebrate Matariki season in Aotearoa New Zealand.', [6, 20], [7, 24], ['NZ']),
   event('italy-republic-day', 'Italian Republic Day', '🇮🇹', 'A tricolor celebration of Italy.', [6, 2], [6, 3], ['IT']),
-  event('texas-independence-week', 'Texas Independence Week', '🤠', 'Boot-stomping fun for the Lone Star State.', [2, 28], [3, 4], ['US-TX']),
   event('washington-statehood', 'Washington Statehood Day', '🌲', 'Evergreen inspiration from the Evergreen State.', [11, 11], [11, 12], ['US-WA']),
   event('tennessee-statehood', 'Tennessee Statehood Day', '🎸', 'A little rhythm from the Volunteer State.', [6, 1], [6, 2], ['US-TN']),
   event('virginia-statehood', 'Virginia Day', '🏛️', 'A historic board from the Old Dominion.', [6, 25], [6, 26], ['US-VA']),
