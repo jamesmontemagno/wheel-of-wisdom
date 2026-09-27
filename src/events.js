@@ -26,7 +26,7 @@ export const THEME_EVENTS = Object.freeze([
   event('fall', 'Fall', '🍂', 'Cozy colors for the Northern Hemisphere fall.', [9, 1], [11, 30]),
   event('halloween', 'Halloween', '🎃', 'A delightfully spooky board.', [10, 24], [10, 31]),
   event('thanksgiving', 'Thanksgiving', '🦃', 'A harvest-season board for Thanksgiving.', [11, 20], [11, 27], ['US']),
-  event('winter', 'Winter', '❄️', 'Snowy details for the Northern Hemisphere winter.', [12, 1], [2, 28]),
+  event('winter', 'Winter', '❄️', 'Snowy details for the Northern Hemisphere winter.', [12, 1], [2, 29]),
   event('christmas', 'Christmas Week', '🎄', 'Festive lights and evergreen cheer.', [12, 18], [12, 26]),
 
   event('world-braille-day', 'World Braille Day', '⠿', 'Celebrate access, reading, and a world of stories.', [1, 4]),
@@ -198,7 +198,6 @@ export function activeThemeEvents(date = new Date(), selectedRegion = 'WORLDWIDE
   const today = [date.getMonth() + 1, date.getDate()]
   return THEME_EVENTS.filter((theme) => {
     if (!regionMatches(theme, selectedRegion)) return false
-    if (theme.id === 'winter' && today[0] === 2 && today[1] === 29) return true
     const { from, to } = theme
     const orderedWindow = compareMonthDay(from, to) <= 0
     const afterStart = compareMonthDay(today, from) >= 0

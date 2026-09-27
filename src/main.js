@@ -18,9 +18,10 @@ const preferenceKeys = {
 await window.__wheelOfWisdomBridge.initialize()
 const isNativeHost = window.__wheelOfWisdomBridge.isNative
 const money = (value) => `$${value.toLocaleString('en-US')}`
-const escape = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+const htmlEscape = (value) => String(value).replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 })[char])
+const escape = htmlEscape
 const restorePreference = (key, fallback) => {
   const value = window.__wheelOfWisdomBridge?.state?.[key]
   if (value === undefined || value === null) return fallback
@@ -248,12 +249,12 @@ function renderLobby() {
         <label class="region-picker" for="event-region">Country or state
           <select id="event-region">
             <option value="WORLDWIDE" ${selectedEventRegion === 'WORLDWIDE' ? 'selected' : ''}>Worldwide celebrations</option>
-            ${EVENT_REGIONS.map((region) => `<option value="${region.id}" ${selectedEventRegion === region.id ? 'selected' : ''}>${escape(region.name)}</option>`).join('')}
+            ${EVENT_REGIONS.map((region) => `<option value="${region.id}" ${selectedEventRegion === region.id ? 'selected' : ''}>${htmlEscape(region.name)}</option>`).join('')}
           </select>
         </label>
         <div class="theme-choices">
-        ${themeChoices.map((theme) => `<button type="button" class="theme-choice ${selectedEventId === theme.id ? 'selected' : ''}" data-event-id="${theme.id}" aria-label="${escape(`${theme.name}: ${theme.description}`)}" aria-pressed="${selectedEventId === theme.id}">
-          <span class="theme-choice-emoji" aria-hidden="true">${theme.emoji}</span><span><strong>${escape(theme.name)}</strong><small>${escape(theme.description)}</small></span>
+        ${themeChoices.map((theme) => `<button type="button" class="theme-choice ${selectedEventId === theme.id ? 'selected' : ''}" data-event-id="${theme.id}" aria-label="${htmlEscape(`${theme.name}: ${theme.description}`)}" aria-pressed="${selectedEventId === theme.id}">
+          <span class="theme-choice-emoji" aria-hidden="true">${theme.emoji}</span><span><strong>${htmlEscape(theme.name)}</strong><small>${htmlEscape(theme.description)}</small></span>
         </button>`).join('')}
         </div><p class="theme-note">More than 100 celebrations rotate in by local date. Country and state boards follow your selection; worldwide themes are always included.</p></fieldset>
       <form id="setup-form">
