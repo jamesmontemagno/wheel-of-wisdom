@@ -341,7 +341,8 @@ function historyForNewGame(seenPuzzleIds) {
   const minimumDrawsToLeaveOnlyTwoBonusCategories = bonusCategoryCounts
     .slice(2)
     .reduce((total, count) => total + count, 0);
-  // Four main boards cannot reduce the bonus pool to two categories unless they consume this many.
+  // This tail sum is the minimum draws needed to leave only two categories, whichever two remain.
+  // Recycle when four main boards could consume that many eligible puzzles.
   return minimumDrawsToLeaveOnlyTwoBonusCategories > FINAL_ROUND ? seen : [];
 }
 

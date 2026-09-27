@@ -670,6 +670,19 @@ test('played boards remain skipped when four rounds cannot exhaust three bonus c
   const available = categoryGroups.slice(0, 7).flatMap(([, puzzles], index) =>
     puzzles.slice(0, [3, 2, 1, 1, 1, 1, 1][index]),
   );
+  for (let a = 0; a < available.length - 3; a += 1) {
+    for (let b = a + 1; b < available.length - 2; b += 1) {
+      for (let c = b + 1; c < available.length - 1; c += 1) {
+        for (let d = c + 1; d < available.length; d += 1) {
+          const used = new Set([a, b, c, d]);
+          const remainingCategories = new Set(
+            available.filter((_, index) => !used.has(index)).map((puzzle) => puzzle.category),
+          );
+          assert.ok(remainingCategories.size >= BONUS_CATEGORY_CHOICES);
+        }
+      }
+    }
+  }
   const availableIds = new Set(available.map((puzzle) => puzzle.id));
   const seen = PUZZLES.filter((puzzle) => !availableIds.has(puzzle.id)).map((puzzle) => puzzle.id);
   const game = createGame(['Ada', 'Bo'], fixed, seen);

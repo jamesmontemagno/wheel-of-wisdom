@@ -323,7 +323,7 @@ function renderHistory() {
         </li>`).join('')}</ol>
       </section>
     </div>` : `<div class="history-card history-empty">${icon('trophy')}<h2>Your first chapter awaits.</h2><p>Finish a game to save the scores and start your leaderboard.</p></div>`}
-    ${history.length ? '<button class="text-button history-clear" id="clear-history" type="button">Delete past history</button>' : ''}
+    ${history.length ? '<button class="text-button history-clear" id="clear-history" type="button">Delete history</button>' : ''}
     <p class="history-note">Pretend prizes, real bragging rights. ${isNativeHost ? 'Game history is stored in this app’s local database.' : 'Clearing browser data removes saved names and history.'}</p>
   </section>`)
   document.querySelector('#clear-history')?.addEventListener('click', confirmClearHistory)
