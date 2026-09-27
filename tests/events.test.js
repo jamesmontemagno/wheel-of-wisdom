@@ -86,6 +86,8 @@ test('regional celebrations respect country and state selections while worldwide
   assert.ok(!idsFor(9, 9, 'US-TX').includes('california-admission'))
   assert.ok(idsFor(3, 2, 'US-TX').includes('texas-independence'))
   assert.ok(!idsFor(3, 2, 'US-TX').includes('texas-independence-week'))
+  assert.ok(!idsFor(3, 2, 'US').includes('texas-independence'))
+  assert.ok(idsFor(7, 4, 'US-TX').includes('us-independence'))
   assert.ok(idsFor(11, 20, 'US-CA').includes('thanksgiving'))
   assert.ok(idsFor(9, 8, 'WORLDWIDE').includes('world-literacy-day'))
   assert.ok(!idsFor(9, 16, 'WORLDWIDE').includes('mexico-independence'))

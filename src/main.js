@@ -21,7 +21,6 @@ const money = (value) => `$${value.toLocaleString('en-US')}`
 const htmlEscape = (value) => String(value).replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 })[char])
-const escape = htmlEscape
 const restorePreference = (key, fallback) => {
   const value = window.__wheelOfWisdomBridge?.state?.[key]
   if (value === undefined || value === null) return fallback
@@ -147,8 +146,8 @@ function wheelMarkup(preview = false, segments = activeWheel()) {
     const fontSize = sealed ? 22 : segment.type === 'cash' ? (size > 14 ? 13 : 15) : 12
     // Labels run along the length of the wedge (rim towards the hub) so they read the long way.
     const labelMarkup = sealed
-      ? `<text x="160" y="48" transform="rotate(${index * angle} 160 160)" text-anchor="middle" fill="${ink}" font-size="${fontSize}" font-weight="800">${escape(label)}</text>`
-      : `<text x="22" y="160" transform="rotate(${index * angle + 90} 160 160)" text-anchor="start" dominant-baseline="central" fill="${ink}" font-size="${fontSize}" font-weight="800" letter-spacing="0.5">${escape(label)}</text>`
+      ? `<text x="160" y="48" transform="rotate(${index * angle} 160 160)" text-anchor="middle" fill="${ink}" font-size="${fontSize}" font-weight="800">${htmlEscape(label)}</text>`
+      : `<text x="22" y="160" transform="rotate(${index * angle + 90} 160 160)" text-anchor="start" dominant-baseline="central" fill="${ink}" font-size="${fontSize}" font-weight="800" letter-spacing="0.5">${htmlEscape(label)}</text>`
     return `<g>
       <path d="M160 160 L${start.join(' ')} A151 151 0 0 1 ${end.join(' ')} Z" fill="${fill}" stroke="#fff8e9" stroke-width="1.5"/>
       ${labelMarkup}
@@ -258,7 +257,7 @@ function renderLobby() {
         </button>`).join('')}
         </div><p class="theme-note">More than 100 celebrations rotate in by local date. Country and state boards follow your selection; worldwide themes are always included.</p></fieldset>
       <form id="setup-form">
-        <div class="player-inputs">${Array.from({ length: playerCount }, (_, i) => `<label class="player-field"><span class="player-avatar color-${i}">${String(i + 1).padStart(2, '0')}</span><span class="field-content"><span>PLAYER ${i + 1}</span><input name="player-${i}" aria-label="Player ${i + 1} name" maxlength="24" autocomplete="off" placeholder="Player ${i + 1}" value="${escape(names[i])}"></span><span class="field-spark" aria-hidden="true">${['✳', '✦', '✿'][i]}</span></label>`).join('')}</div>
+        <div class="player-inputs">${Array.from({ length: playerCount }, (_, i) => `<label class="player-field"><span class="player-avatar color-${i}">${String(i + 1).padStart(2, '0')}</span><span class="field-content"><span>PLAYER ${i + 1}</span><input name="player-${i}" aria-label="Player ${i + 1} name" maxlength="24" autocomplete="off" placeholder="Player ${i + 1}" value="${htmlEscape(names[i])}"></span><span class="field-spark" aria-hidden="true">${['✳', '✦', '✿'][i]}</span></label>`).join('')}</div>
         <div class="setup-note"><span aria-hidden="true">✧</span><span>New puzzles. Random categories.<br>A different game, every single time.</span></div>
         <button class="button button-primary start-button" type="submit">Let’s play ${icon('arrow')}</button>
       </form>
@@ -346,14 +345,14 @@ function renderHistory() {
     ${history.length ? `<div class="history-layout">
       <section class="history-card" aria-labelledby="leaderboard-title"><h2 id="leaderboard-title">${icon('trophy')} Leaderboard</h2>
         <p class="history-note">Names are combined regardless of capitalization.</p>
-        <ol class="leaderboard">${scores.map((player, index) => `<li><span class="rank">${index + 1}</span><span class="history-player"><strong>${escape(player.name)}</strong><small>${player.games} game${player.games === 1 ? '' : 's'}</small></span><b>${money(player.total)}</b></li>`).join('')}</ol>
+        <ol class="leaderboard">${scores.map((player, index) => `<li><span class="rank">${index + 1}</span><span class="history-player"><strong>${htmlEscape(player.name)}</strong><small>${player.games} game${player.games === 1 ? '' : 's'}</small></span><b>${money(player.total)}</b></li>`).join('')}</ol>
       </section>
       <section class="history-card" aria-labelledby="past-games-title"><h2 id="past-games-title">Past games</h2>
         <ol class="history-games">${history.map((entry) => `<li>
-          <time datetime="${escape(entry.finishedAt)}">${escape(new Date(entry.finishedAt).toLocaleString())}</time>
-          <h3>${escape(entry.players[entry.champion].name)} takes the crown</h3>
-          <div class="final-rankings">${[...entry.players].sort((a, b) => b.total - a.total).map((player) => `<div><span>${escape(player.name)}</span><strong>${money(player.total)}</strong></div>`).join('')}</div>
-          <p class="history-note">${entry.bonusWon ? 'Bonus won' : 'Bonus revealed, not won'}: ${escape(entry.bonusPrizeLabel)} · ${money(entry.bonusPrize)}</p>
+          <time datetime="${htmlEscape(entry.finishedAt)}">${htmlEscape(new Date(entry.finishedAt).toLocaleString())}</time>
+          <h3>${htmlEscape(entry.players[entry.champion].name)} takes the crown</h3>
+          <div class="final-rankings">${[...entry.players].sort((a, b) => b.total - a.total).map((player) => `<div><span>${htmlEscape(player.name)}</span><strong>${money(player.total)}</strong></div>`).join('')}</div>
+          <p class="history-note">${entry.bonusWon ? 'Bonus won' : 'Bonus revealed, not won'}: ${htmlEscape(entry.bonusPrizeLabel)} · ${money(entry.bonusPrize)}</p>
         </li>`).join('')}</ol>
       </section>
     </div>` : `<div class="history-card history-empty">${icon('trophy')}<h2>Your first chapter awaits.</h2><p>Finish a game to save the scores and start your leaderboard.</p></div>`}
@@ -400,13 +399,13 @@ function boardMarkup() {
   const showBonusLetters = ['bonus-pick', 'bonus-countdown', 'bonus-solve'].includes(game.phase)
   const theme = themeForId(game.eventId)
   return `<section class="puzzle-section" data-event="${theme.id}" aria-label="Puzzle board">
-    <div class="puzzle-heading"><span class="category"><span aria-hidden="true">${theme.emoji}</span> ${escape(game.puzzle.category)}</span><span class="puzzle-meta">${isBonus ? 'THE FINAL CHALLENGE' : `${game.puzzle.phrase.replace(/[^A-Z]/gi, '').length} LETTERS`}</span></div>
-    ${theme.id !== CLASSIC_THEME.id ? `<div class="event-board-label"><span aria-hidden="true">${theme.emoji}</span> ${escape(theme.name)} event board</div>` : ''}
+    <div class="puzzle-heading"><span class="category"><span aria-hidden="true">${theme.emoji}</span> ${htmlEscape(game.puzzle.category)}</span><span class="puzzle-meta">${isBonus ? 'THE FINAL CHALLENGE' : `${game.puzzle.phrase.replace(/[^A-Z]/gi, '').length} LETTERS`}</span></div>
+    ${theme.id !== CLASSIC_THEME.id ? `<div class="event-board-label"><span aria-hidden="true">${theme.emoji}</span> ${htmlEscape(theme.name)} event board</div>` : ''}
     ${showBonusLetters ? bonusLetterTrayMarkup() : ''}
-    <div class="puzzle-board" data-decoration="${escape(theme.emoji)}" style="--longest-word:${longest}">
+    <div class="puzzle-board" data-decoration="${htmlEscape(theme.emoji)}" style="--longest-word:${longest}">
       <div class="puzzle-words">${words.map((word) => `<div class="puzzle-word">${[...word].map((letter) => {
         const shown = isLetterRevealed(game, letter)
-        return `<span class="letter-tile ${shown ? 'revealed' : ''} ${/[A-Z]/i.test(letter) ? '' : 'punctuation'}" aria-label="${shown ? escape(letter) : 'Hidden letter'}">${shown ? escape(letter) : '<span aria-hidden="true">·</span>'}</span>`
+        return `<span class="letter-tile ${shown ? 'revealed' : ''} ${/[A-Z]/i.test(letter) ? '' : 'punctuation'}" aria-label="${shown ? htmlEscape(letter) : 'Hidden letter'}">${shown ? htmlEscape(letter) : '<span aria-hidden="true">·</span>'}</span>`
       }).join('')}</div>`).join('')}</div>
       <div class="board-caption" aria-hidden="true"><span></span> A LITTLE PIECE OF THE PUZZLE <span></span></div>
     </div>
@@ -418,15 +417,15 @@ function sealedBoardMarkup() {
   const theme = themeForId(game.eventId)
   return `<section class="puzzle-section sealed-board" data-event="${theme.id}" aria-label="Puzzle board">
     <div class="puzzle-heading"><span class="category"><span aria-hidden="true">${theme.emoji}</span> BONUS PUZZLE</span><span class="puzzle-meta">SEALED</span></div>
-    ${theme.id !== CLASSIC_THEME.id ? `<div class="event-board-label"><span aria-hidden="true">${theme.emoji}</span> ${escape(theme.name)} event board</div>` : ''}
-    <div class="puzzle-board sealed" data-decoration="${escape(theme.emoji)}"><p>${icon('gift')}<span>${game.phase === 'bonus-category' ? 'Choose a category to set your bonus puzzle.' : 'Your bonus puzzle stays covered until your envelope is locked in. Spin first!'}</span></p></div>
+    ${theme.id !== CLASSIC_THEME.id ? `<div class="event-board-label"><span aria-hidden="true">${theme.emoji}</span> ${htmlEscape(theme.name)} event board</div>` : ''}
+    <div class="puzzle-board sealed" data-decoration="${htmlEscape(theme.emoji)}"><p>${icon('gift')}<span>${game.phase === 'bonus-category' ? 'Choose a category to set your bonus puzzle.' : 'Your bonus puzzle stays covered until your envelope is locked in. Spin first!'}</span></p></div>
   </section>`
 }
 
 function playerMarkup() {
   return `<div class="scoreboard" style="--players:${game.players.length}" aria-label="Player scores">${game.players.map((player, i) => `
     <div class="player-score color-${i} ${game.activePlayer === i ? 'active-player' : ''}">
-      <div class="score-name"><span class="score-dot" aria-hidden="true"></span><span>${escape(player.name)}</span>${game.activePlayer === i ? '<span class="turn-tag">UP</span>' : ''}</div>
+      <div class="score-name"><span class="score-dot" aria-hidden="true"></span><span>${htmlEscape(player.name)}</span>${game.activePlayer === i ? '<span class="turn-tag">UP</span>' : ''}</div>
       <strong>${money(player.round)}</strong><span class="banked-label">BANKED <b>${money(player.total)}</b></span>
       ${player.prizes.length > 0 ? `<span class="prize-tag">${icon(prizeIcon(player.prizes[0]))} ${player.prizes.length} PRIZE${player.prizes.length === 1 ? '' : 'S'} HELD</span>` : ''}
     </div>`).join('')}</div>`
@@ -437,7 +436,7 @@ function turnBannerMarkup() {
   const player = game.players[game.activePlayer]
   return `<div class="turn-banner color-${game.activePlayer}" aria-live="polite">
     <span class="turn-banner-pulse" aria-hidden="true"></span>
-    <span class="turn-banner-name"><small>IT’S YOUR TURN</small><strong>${escape(player.name)}</strong></span>
+    <span class="turn-banner-name"><small>IT’S YOUR TURN</small><strong>${htmlEscape(player.name)}</strong></span>
     <span class="turn-clock" id="turn-clock" role="timer" aria-label="Seconds left in this turn">${icon('clock')}<span id="turn-seconds">${TURN_SECONDS}</span><small>SEC</small></span>
   </div>`
 }
@@ -467,7 +466,7 @@ function playingControls() {
   return `<section class="wheel-panel ${spinning ? 'spinning' : ''}" aria-label="Spin and actions">
     <div class="wheel-panel-heading"><span class="card-eyebrow">A LITTLE LUCK GOES A LONG WAY</span><span aria-hidden="true">✧</span></div>
     ${wheelMarkup()}
-    <div class="wheel-result">${spinning ? 'Round and round we go…' : game.pendingPrize ? `<strong>${escape(game.pendingPrize.label)}</strong>` : game.action === 'consonant' ? `<strong>${money(game.pendingValue)}</strong> per consonant` : game.lastSpin ? escape(game.lastSpin.label) : 'Your wisdom is one spin away.'}</div>
+    <div class="wheel-result">${spinning ? 'Round and round we go…' : game.pendingPrize ? `<strong>${htmlEscape(game.pendingPrize.label)}</strong>` : game.action === 'consonant' ? `<strong>${money(game.pendingValue)}</strong> per consonant` : game.lastSpin ? htmlEscape(game.lastSpin.label) : 'Your wisdom is one spin away.'}</div>
     <button class="button button-primary" id="spin" ${spinning || game.action !== 'spin' || vowelMode ? 'disabled' : ''}>${icon('spin')} ${spinning ? 'Spinning…' : 'Spin the wheel'}</button>
     <div class="secondary-actions"><button class="button button-secondary" id="buy-vowel" ${spinning || !canBuy ? 'disabled' : ''}>${vowelMode ? 'Cancel' : 'Buy a vowel'} <span>${vowelMode ? '' : '$250'}</span></button><button class="button button-secondary" id="solve" ${spinning ? 'disabled' : ''}>Solve it ${icon('arrow')}</button></div>
     <p class="wheel-note">${roundMultiplier(game.round) > 1 ? `<strong class="double-stakes-note">RAISED STAKES · ALL CASH WEDGES PAY ${multiplierLabel(game.round).toUpperCase()}</strong>` : 'Watch out for Bankrupt &amp; Lose a Turn.'}<br>${activeWheel().length} spaces this round${activeWheel().some((segment) => segment.type === 'trip' || segment.type === 'mystery') ? ' · trip &amp; mystery surprises in play' : ''}<br>${bankruptsLeft === 0 ? 'Bankrupt is spent for this round' : `Bankrupt can land ${bankruptsLeft} more time${bankruptsLeft === 1 ? '' : 's'} this round`} (max ${bankruptLimit(game.round)})</p>
@@ -479,7 +478,7 @@ const confettiMarkup = () => `<div class="confetti" aria-hidden="true">${Array.f
 
 function endRoundMarkup() {
   const player = game.players[game.roundWinner]
-  return `<section class="celebration-card celebrating">${confettiMarkup()}<span class="celebration-icon" aria-hidden="true">✦</span><span class="card-eyebrow">NOW THAT’S A GOOD GUESS</span><h2>${escape(player.name)}<br>nailed it.</h2><p>The puzzle is solved and the winnings are safe.</p><div class="prize-amount">${money(game.roundWinnings)}<span>${game.roundPrizes.length > 0 ? 'CASH &amp; PRIZES THIS ROUND' : 'WON THIS ROUND'}</span></div><div class="round-total">${money(player.total)}<span>NEW TOTAL</span></div>${game.roundPrizes.length > 0 ? `<div class="prize-list">${game.roundPrizes.map((prize) => `<div>${icon(prizeIcon(prize))}<span><strong>${escape(prize.label)}</strong><small>${escape(prize.note)}</small></span><b>${money(prize.value)}</b></div>`).join('')}</div>` : ''}<button class="button button-primary" id="next-round">${game.round === FINAL_ROUND ? 'On to the bonus round' : `Let’s play round ${game.round + 1}`} ${icon('arrow')}</button></section>`
+  return `<section class="celebration-card celebrating">${confettiMarkup()}<span class="celebration-icon" aria-hidden="true">✦</span><span class="card-eyebrow">NOW THAT’S A GOOD GUESS</span><h2>${htmlEscape(player.name)}<br>nailed it.</h2><p>The puzzle is solved and the winnings are safe.</p><div class="prize-amount">${money(game.roundWinnings)}<span>${game.roundPrizes.length > 0 ? 'CASH &amp; PRIZES THIS ROUND' : 'WON THIS ROUND'}</span></div><div class="round-total">${money(player.total)}<span>NEW TOTAL</span></div>${game.roundPrizes.length > 0 ? `<div class="prize-list">${game.roundPrizes.map((prize) => `<div>${icon(prizeIcon(prize))}<span><strong>${htmlEscape(prize.label)}</strong><small>${htmlEscape(prize.note)}</small></span><b>${money(prize.value)}</b></div>`).join('')}</div>` : ''}<button class="button button-primary" id="next-round">${game.round === FINAL_ROUND ? 'On to the bonus round' : `Let’s play round ${game.round + 1}`} ${icon('arrow')}</button></section>`
 }
 
 function bonusMarkup() {
@@ -490,13 +489,13 @@ function bonusMarkup() {
   const body = {
     'bonus-spin': () => '',
     'bonus-category': () => `<div class="bonus-categories" role="group" aria-label="Choose your bonus category">
-      ${game.bonusCategoryOptions.map((option, index) => `<button class="button button-secondary category-choice color-${index}" data-category="${escape(option.category)}" ${spinning ? 'disabled' : ''}><span aria-hidden="true">✦</span> ${escape(option.category)}</button>`).join('')}
+      ${game.bonusCategoryOptions.map((option, index) => `<button class="button button-secondary category-choice color-${index}" data-category="${htmlEscape(option.category)}" ${spinning ? 'disabled' : ''}><span aria-hidden="true">✦</span> ${htmlEscape(option.category)}</button>`).join('')}
     </div><p>Three categories, one puzzle. Pick the one that speaks to you: R S T L N E appear on the board right away.</p>`,
     'bonus-pick': () => `<div class="bonus-clock" id="pick-clock" role="timer" aria-label="Time remaining to pick letters"><span id="pick-seconds">${BONUS_PICK_SECONDS}</span><small>SECONDS TO PICK</small></div><p class="bonus-remaining" role="status">Still to pick: <strong>${remaining.consonants} consonant${remaining.consonants === 1 ? '' : 's'}</strong> and <strong>${remaining.vowels} vowel${remaining.vowels === 1 ? '' : 's'}</strong>.</p><p>R S T L N E are already on the board. Pick 3 more consonants and 1 vowel within ${BONUS_PICK_SECONDS} seconds. Your letters fill in together, then a ${BONUS_COUNTDOWN_SECONDS}-second countdown starts the ${BONUS_SECONDS}-second solve.</p>`,
     'bonus-countdown': () => `<div class="bonus-clock countdown urgent" role="timer" aria-label="Seconds until the solve begins"><span id="countdown-seconds">${BONUS_COUNTDOWN_SECONDS}</span><small>GET READY</small></div><p>Your letters are on the board. The ${BONUS_SECONDS}-second solve clock starts the moment this countdown ends.</p>`,
     'bonus-solve': () => `<div class="bonus-clock" role="timer" aria-label="Time remaining"><span id="seconds-left">${BONUS_SECONDS}</span><small>SECONDS TO SOLVE</small></div><p>Make as many guesses as you need before the clock runs out.</p><form id="bonus-form"><label class="sr-only" for="bonus-answer">Your bonus puzzle answer</label><input class="answer-input" id="bonus-answer" autocomplete="off" spellcheck="false" placeholder="Try an answer…" maxlength="100" required><button class="button button-primary" type="submit">Try this answer ${icon('arrow')}</button></form>`,
   }[game.phase]
-  return `<section class="bonus-card"><span class="celebration-icon" aria-hidden="true">${icon('trophy')}</span><span class="card-eyebrow">ONE LAST MOMENT OF MAGIC</span><h2>${escape(game.players[game.champion].name)},<br>this is your shot.</h2>
+  return `<section class="bonus-card"><span class="celebration-icon" aria-hidden="true">${icon('trophy')}</span><span class="card-eyebrow">ONE LAST MOMENT OF MAGIC</span><h2>${htmlEscape(game.players[game.champion].name)},<br>this is your shot.</h2>
     ${prizeBlock}
     ${body ? body() : ''}
   </section>`
@@ -509,7 +508,7 @@ function finalMarkup() {
   const prize = game.bonusPrizeRevealed
     ? `<div class="envelope-reveal ${game.bonusWon ? 'bonus-win' : 'bonus-loss'}" aria-label="Opened bonus envelope">
         <div class="envelope-flap" aria-hidden="true"></div>
-        <div class="envelope-prize"><span class="prize-symbol" aria-hidden="true">${prizeSymbol}</span><span class="card-eyebrow">${game.bonusWon ? 'YOU WON!' : 'INSIDE YOUR ENVELOPE · NOT WON'}</span><h3>${escape(game.bonusPrizeLabel)}</h3><strong>${money(game.bonusPrize)}</strong><p>${escape(game.bonusPrizeNote ?? '')}</p></div>
+        <div class="envelope-prize"><span class="prize-symbol" aria-hidden="true">${prizeSymbol}</span><span class="card-eyebrow">${game.bonusWon ? 'YOU WON!' : 'INSIDE YOUR ENVELOPE · NOT WON'}</span><h3>${htmlEscape(game.bonusPrizeLabel)}</h3><strong>${money(game.bonusPrize)}</strong><p>${htmlEscape(game.bonusPrizeNote ?? '')}</p></div>
         <span class="envelope-front" aria-hidden="true">✦</span>
         ${game.bonusWon ? '<span class="prize-sparkles" aria-hidden="true">✦ ✧ ✦ ✧ ✦</span>' : ''}
       </div>`
@@ -520,9 +519,9 @@ function finalMarkup() {
           ${icon('arrow')}
         </button>
       </div>`
-  return `<section class="final-card celebrating">${confettiMarkup()}<span class="celebration-icon" aria-hidden="true">${icon('trophy')}</span><span class="card-eyebrow">${game.bonusWon ? 'BONUS ROUND WON' : 'BONUS ROUND NOT WON'}</span><h2>${escape(champion.name)}<br>takes the crown.</h2><p>${game.bonusWon ? 'The bonus puzzle is solved and the prize is yours. What a finish!' : game.bonusPrizeRevealed ? 'The bonus prize was not won; your banked winnings are safe.' : 'The bonus prize was not won. Your banked winnings are safe; open the envelope to see what you could have won.'}</p>
+  return `<section class="final-card celebrating">${confettiMarkup()}<span class="celebration-icon" aria-hidden="true">${icon('trophy')}</span><span class="card-eyebrow">${game.bonusWon ? 'BONUS ROUND WON' : 'BONUS ROUND NOT WON'}</span><h2>${htmlEscape(champion.name)}<br>takes the crown.</h2><p>${game.bonusWon ? 'The bonus puzzle is solved and the prize is yours. What a finish!' : game.bonusPrizeRevealed ? 'The bonus prize was not won; your banked winnings are safe.' : 'The bonus prize was not won. Your banked winnings are safe; open the envelope to see what you could have won.'}</p>
     ${prize}
-    <div class="final-rankings">${rankings.map((p, i) => `<div><span class="rank">${i + 1}</span><span>${escape(p.name)}</span><strong>${money(p.total)}</strong></div>`).join('')}</div><button class="button button-primary" id="play-again">One more round? ${icon('spin')}</button><button class="text-button" id="view-history">View history & leaderboard</button><span class="setup-footnote">${storageFailed ? 'Results kept for this visit only.' : 'Results saved on this device.'}</span></section>`
+    <div class="final-rankings">${rankings.map((p, i) => `<div><span class="rank">${i + 1}</span><span>${htmlEscape(p.name)}</span><strong>${money(p.total)}</strong></div>`).join('')}</div><button class="button button-primary" id="play-again">One more round? ${icon('spin')}</button><button class="text-button" id="view-history">View history & leaderboard</button><span class="setup-footnote">${storageFailed ? 'Results kept for this visit only.' : 'Results saved on this device.'}</span></section>`
 }
 
 function renderGame() {
@@ -541,7 +540,7 @@ function renderGame() {
     ${!bonus && roundMultiplier(game.round) > 1 ? `<div class="double-stakes-banner" role="status"><strong>${multiplierLabel(game.round).toUpperCase()} STAKES</strong><span>Every cash wedge pays ${multiplierLabel(game.round)} this round.</span></div>` : ''}
     ${playerMarkup()}
     ${turnBannerMarkup()}
-    <div class="turn-message" role="status" aria-live="polite"><span class="status-spark" aria-hidden="true">✳</span><span>${spinning ? 'A little suspense is part of the fun. Hold tight…' : escape(game.message)}</span></div>
+    <div class="turn-message" role="status" aria-live="polite"><span class="status-spark" aria-hidden="true">✳</span><span>${spinning ? 'A little suspense is part of the fun. Hold tight…' : htmlEscape(game.message)}</span></div>
     <div class="play-layout">
       <div class="puzzle-column">${SEALED_PHASES.includes(game.phase) ? sealedBoardMarkup() : boardMarkup()}${game.phase === 'playing' || game.phase === 'bonus-pick' ? keyboardMarkup() : `<div class="after-puzzle"><span aria-hidden="true">✧</span>${game.phase === 'round-end' ? 'Great minds. Good times. On to the next one.' : game.phase === 'game-over' ? 'The best part? You can do it all again.' : 'Deep breath. You’ve got this.'}</div>`}</div>
       ${game.phase === 'playing' ? playingControls() : game.phase === 'round-end' ? endRoundMarkup() : game.phase === 'game-over' ? finalMarkup() : bonusMarkup()}
@@ -604,7 +603,7 @@ function act(action) {
     action()
     renderGame()
   } catch (error) {
-    showDialog('Not quite yet', `<p>${escape(error.message)}</p><button class="button button-primary" data-close>Got it</button>`)
+    showDialog('Not quite yet', `<p>${htmlEscape(error.message)}</p><button class="button button-primary" data-close>Got it</button>`)
   }
 }
 
@@ -617,7 +616,7 @@ function openSpinModal(title) {
     dialog.className = 'spin-modal'
     document.body.append(dialog)
   }
-  dialog.innerHTML = `<div class="spin-modal-card" role="status"><span class="card-eyebrow">${escape(title)}</span>${wheelMarkup()}<p>Round and round we go…</p></div>`
+  dialog.innerHTML = `<div class="spin-modal-card" role="status"><span class="card-eyebrow">${htmlEscape(title)}</span>${wheelMarkup()}<p>Round and round we go…</p></div>`
   if (!dialog.open) dialog.showModal()
   return dialog
 }
