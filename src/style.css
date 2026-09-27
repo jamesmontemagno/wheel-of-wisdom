@@ -424,6 +424,7 @@ dialog .fair-play-note { padding-top: 14px; border-top: 1px solid #e3e5d5; font-
 .history-page { padding: 35px 0; }
 .history-page h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 550; margin: 10px 0; }
 .history-note { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.history-clear { margin: 8px 0 0 auto; }
 .history-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 24px; margin: 24px 0; align-items: start; }
 .history-card { padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: #fffef8; min-width: 0; }
 .history-card h2 { display: flex; gap: 10px; align-items: center; font-size: 24px; font-weight: 550; margin-bottom: 10px; }

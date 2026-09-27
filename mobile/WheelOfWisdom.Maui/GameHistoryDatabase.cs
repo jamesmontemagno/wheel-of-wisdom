@@ -65,6 +65,12 @@ public sealed class GameHistoryDatabase
         });
     }
 
+    public async Task ClearAsync()
+    {
+        var connection = await GetConnectionAsync();
+        await connection.DeleteAllAsync<GameHistoryRecord>();
+    }
+
     private async Task<SQLiteAsyncConnection> GetConnectionAsync()
     {
         if (database is not null)

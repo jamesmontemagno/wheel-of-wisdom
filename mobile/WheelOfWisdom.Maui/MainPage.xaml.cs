@@ -45,12 +45,27 @@ public partial class MainPage : ContentPage
                     try
                     {
                         await historyDatabase.SaveAsync(entryElement);
-                        SendHistorySaveResult(requestId, true);
+                        SendHistoryResult("historySaved", requestId, true);
                     }
                     catch (Exception ex)
                     {
                         Debug.WriteLine($"Unable to save game history: {ex}");
-                        SendHistorySaveResult(requestId, false);
+                        SendHistoryResult("historySaved", requestId, false);
+                    }
+                    break;
+                case "clearHistory" when
+                    payload.RootElement.TryGetProperty("requestId", out var clearRequestIdElement) &&
+                    clearRequestIdElement.ValueKind == JsonValueKind.String:
+                    var clearRequestId = clearRequestIdElement.GetString()!;
+                    try
+                    {
+                        await historyDatabase.ClearAsync();
+                        SendHistoryResult("historyCleared", clearRequestId, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Unable to clear game history: {ex}");
+                        SendHistoryResult("historyCleared", clearRequestId, false);
                     }
                     break;
             }
@@ -61,11 +76,11 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private void SendHistorySaveResult(string requestId, bool success)
+    private void SendHistoryResult(string type, string requestId, bool success)
     {
         HybridWebViewControl.SendRawMessage(JsonSerializer.Serialize(new
         {
-            type = "historySaved",
+            type,
             requestId,
             success,
         }));

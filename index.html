@@ -109,8 +109,20 @@
               pendingHistorySaves.delete(requestId);
               reject(new Error('Timed out while saving game history.'));
             }, 5000);
-            pendingHistorySaves.set(requestId, { resolve, reject, timeout });
+            pendingHistorySaves.set(requestId, { resolve, reject, timeout, responseType: 'historySaved' });
             window.HybridWebView.SendRawMessage(JSON.stringify({ type: 'saveHistory', requestId, entry }));
+          });
+        },
+        clearHistory() {
+          if (!window.HybridWebView) return Promise.resolve();
+          const requestId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+          return new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+              pendingHistorySaves.delete(requestId);
+              reject(new Error('Timed out while deleting game history.'));
+            }, 5000);
+            pendingHistorySaves.set(requestId, { resolve, reject, timeout, responseType: 'historyCleared' });
+            window.HybridWebView.SendRawMessage(JSON.stringify({ type: 'clearHistory', requestId }));
           });
         },
         applyMessage(payload) {
@@ -123,13 +135,14 @@
             resolveMauiPreferences();
             return;
           }
-          if (payload.type === 'historySaved' && typeof payload.requestId === 'string') {
+          if (['historySaved', 'historyCleared'].includes(payload.type) &&
+              typeof payload.requestId === 'string') {
             const pending = pendingHistorySaves.get(payload.requestId);
-            if (!pending) return;
+            if (!pending || pending.responseType !== payload.type) return;
             clearTimeout(pending.timeout);
             pendingHistorySaves.delete(payload.requestId);
             if (payload.success) pending.resolve();
-            else pending.reject(new Error('The native app could not save game history.'));
+            else pending.reject(new Error('The native app could not update game history.'));
           }
         },
       };
