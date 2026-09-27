@@ -244,7 +244,7 @@ function renderLobby() {
         <button type="button" data-count="3" aria-pressed="${playerCount === 3}" class="${playerCount === 3 ? 'selected' : ''}">${icon('people')} 3 players</button>
       </div></fieldset>
       <fieldset class="theme-picker"><legend>Choose your board</legend><div class="theme-choices">
-        ${themeChoices.map((theme) => `<button type="button" class="theme-choice ${selectedEventId === theme.id ? 'selected' : ''}" data-event-id="${theme.id}" aria-pressed="${selectedEventId === theme.id}">
+        ${themeChoices.map((theme) => `<button type="button" class="theme-choice ${selectedEventId === theme.id ? 'selected' : ''}" data-event-id="${theme.id}" aria-label="${escape(`${theme.name}: ${theme.description}`)}" aria-pressed="${selectedEventId === theme.id}">
           <span class="theme-choice-emoji" aria-hidden="true">${theme.emoji}</span><span><strong>${escape(theme.name)}</strong><small>${escape(theme.description)}</small></span>
         </button>`).join('')}
       </div><p class="theme-note">Seasonal and holiday boards appear on their dates.</p></fieldset>

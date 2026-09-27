@@ -76,7 +76,7 @@ export const THEME_EVENTS = Object.freeze([
     emoji: '❄️',
     description: 'Snowy details for the Northern Hemisphere winter.',
     from: [12, 1],
-    to: [2, 29],
+    to: [2, 28],
   }),
   Object.freeze({
     id: 'christmas',
@@ -92,7 +92,8 @@ const monthDayNumber = ([month, day]) => (month - 1) * 100 + day
 
 export function activeThemeEvents(date = new Date()) {
   const today = monthDayNumber([date.getMonth() + 1, date.getDate()])
-  return THEME_EVENTS.filter(({ from, to }) => {
+  return THEME_EVENTS.filter(({ id, from, to }) => {
+    if (id === 'winter' && date.getMonth() === 1 && date.getDate() === 29) return true
     const start = monthDayNumber(from)
     const end = monthDayNumber(to)
     return start <= end
