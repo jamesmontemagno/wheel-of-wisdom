@@ -26,7 +26,7 @@ export const THEME_EVENTS = Object.freeze([
   event('fall', 'Fall', '🍂', 'Cozy colors for the Northern Hemisphere fall.', [9, 1], [11, 30]),
   event('halloween', 'Halloween', '🎃', 'A delightfully spooky board.', [10, 24], [10, 31]),
   event('thanksgiving', 'Thanksgiving', '🦃', 'A harvest-season board for Thanksgiving.', [11, 20], [11, 27], ['US']),
-  event('winter', 'Winter', '❄️', 'Snowy details for the Northern Hemisphere winter.', [12, 1], [2, 29]),
+  event('winter', 'Winter', '❄️', 'Snowy details for the Northern Hemisphere winter.', [12, 1], [2, 28]),
   event('christmas', 'Christmas Week', '🎄', 'Festive lights and evergreen cheer.', [12, 18], [12, 26]),
 
   event('world-braille-day', 'World Braille Day', '⠿', 'Celebrate access, reading, and a world of stories.', [1, 4]),
@@ -94,6 +94,7 @@ export const THEME_EVENTS = Object.freeze([
   event('mexican-revolution-day', 'Mexican Revolution Day', '🌵', 'A spirited celebration of Mexican history.', [11, 20], [11, 21], ['MX']),
   event('uk-bonfire-night', 'Bonfire Night', '🎆', 'A sparkling autumn night in the United Kingdom.', [11, 5], [11, 6], ['GB']),
   event('ireland-bloomsday', 'Bloomsday', '📜', 'A literary celebration across Ireland.', [6, 16], [6, 17], ['IE']),
+  // Matariki follows the lunar calendar; this fixed late-June/July window is a seasonal approximation.
   event('new-zealand-matariki', 'Matariki Season', '✨', 'Celebrate Matariki season in Aotearoa New Zealand.', [6, 20], [7, 24], ['NZ']),
   event('italy-republic-day', 'Italian Republic Day', '🇮🇹', 'A tricolor celebration of Italy.', [6, 2], [6, 3], ['IT']),
   event('washington-statehood', 'Washington Statehood Day', '🌲', 'Evergreen inspiration from the Evergreen State.', [11, 11], [11, 12], ['US-WA']),
@@ -197,6 +198,7 @@ export function activeThemeEvents(date = new Date(), selectedRegion = 'WORLDWIDE
   const today = [date.getMonth() + 1, date.getDate()]
   return THEME_EVENTS.filter((theme) => {
     if (!regionMatches(theme, selectedRegion)) return false
+    if (theme.id === 'winter' && today[0] === 2 && today[1] === 29) return true
     const { from, to } = theme
     const orderedWindow = compareMonthDay(from, to) <= 0
     const afterStart = compareMonthDay(today, from) >= 0
