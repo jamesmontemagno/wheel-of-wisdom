@@ -88,6 +88,10 @@ test('regional celebrations respect country and state selections while worldwide
   assert.ok(idsFor(9, 8, 'WORLDWIDE').includes('world-literacy-day'))
   assert.ok(!idsFor(9, 16, 'WORLDWIDE').includes('mexico-independence'))
   assert.ok(idsFor(9, 16, 'MX').includes('mexico-independence'))
+  assert.ok(idsFor(6, 14, 'US').includes('us-flag-day'))
+  assert.ok(idsFor(7, 24, 'NZ').includes('new-zealand-matariki'))
+  assert.ok(!idsFor(7, 25, 'NZ').includes('new-zealand-matariki'))
+  assert.ok(idsFor(10, 30, 'US-NV').includes('nevada-day'))
 })
 
 test('browser language suggests a supported country and safely falls back worldwide', () => {

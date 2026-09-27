@@ -82,7 +82,7 @@ export const THEME_EVENTS = Object.freeze([
   event('world-food-day', 'World Food Day', '🥕', 'A delicious board celebrating food and community.', [10, 16]),
   event('alaska-day', 'Alaska Day', '🐻', 'A wild, northern celebration of the Last Frontier.', [10, 18], [10, 19], ['US-AK']),
   event('world-pasta-day', 'World Pasta Day', '🍝', 'Twirl into a tasty game night.', [10, 25]),
-  event('nevada-day', 'Nevada Day', '🎰', 'A little desert sparkle for the Silver State.', [10, 31], [11, 1], ['US-NV']),
+  event('nevada-day', 'Nevada Day Week', '🎰', 'A little desert sparkle for the Silver State.', [10, 25], [10, 31], ['US-NV']),
   event('day-of-dead', 'Day of the Dead', '💀', 'Colorful marigolds and joyful remembrance.', [11, 1], [11, 2], ['MX']),
   event('japan-culture-day', 'Culture Day', '🎎', 'Celebrate art and culture in Japan.', [11, 3], [11, 4], ['JP']),
   event('world-kindness-day', 'World Kindness Day', '💛', 'A little kindness makes every game better.', [11, 13]),
@@ -94,7 +94,7 @@ export const THEME_EVENTS = Object.freeze([
   event('mexican-revolution-day', 'Mexican Revolution Day', '🌵', 'A spirited celebration of Mexican history.', [11, 20], [11, 21], ['MX']),
   event('uk-bonfire-night', 'Bonfire Night', '🎆', 'A sparkling autumn night in the United Kingdom.', [11, 5], [11, 6], ['GB']),
   event('ireland-bloomsday', 'Bloomsday', '📜', 'A literary celebration across Ireland.', [6, 16], [6, 17], ['IE']),
-  event('new-zealand-matariki', 'Matariki', '✨', 'A winter celebration of the Māori New Year.', [6, 20], [6, 27], ['NZ']),
+  event('new-zealand-matariki', 'Matariki Season', '✨', 'Celebrate Matariki season in Aotearoa New Zealand.', [6, 20], [7, 24], ['NZ']),
   event('italy-republic-day', 'Italian Republic Day', '🇮🇹', 'A tricolor celebration of Italy.', [6, 2], [6, 3], ['IT']),
   event('texas-independence-week', 'Texas Independence Week', '🤠', 'Boot-stomping fun for the Lone Star State.', [2, 28], [3, 4], ['US-TX']),
   event('washington-statehood', 'Washington Statehood Day', '🌲', 'Evergreen inspiration from the Evergreen State.', [11, 11], [11, 12], ['US-WA']),
@@ -137,7 +137,7 @@ export const THEME_EVENTS = Object.freeze([
   event('kansas-statehood', 'Kansas Statehood Day', '🌻', 'Sunflower colors for the Sunflower State.', [1, 29], [1, 30], ['US-KS']),
   event('new-mexico-statehood', 'New Mexico Statehood Day', '🌶️', 'A chile-bright board from the Land of Enchantment.', [1, 6], [1, 7], ['US-NM']),
   event('hawaii-statehood', 'Hawaii Statehood Day', '🌺', 'Aloha colors for Hawaiʻi Statehood Day.', [8, 21], [8, 22], ['US-HI']),
-  event('south-carolina-independence', 'South Carolina Independence Day', '🎆', 'A historic summer celebration in South Carolina.', [7, 4], [7, 5], ['US-SC']),
+  event('us-flag-day', 'U.S. Flag Day', '🇺🇸', 'A red, white, and blue board for Flag Day.', [6, 14], [6, 15], ['US']),
 ])
 
 export const EVENT_REGIONS = Object.freeze([

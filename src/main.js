@@ -402,7 +402,7 @@ function boardMarkup() {
     <div class="puzzle-heading"><span class="category"><span aria-hidden="true">${theme.emoji}</span> ${escape(game.puzzle.category)}</span><span class="puzzle-meta">${isBonus ? 'THE FINAL CHALLENGE' : `${game.puzzle.phrase.replace(/[^A-Z]/gi, '').length} LETTERS`}</span></div>
     ${theme.id !== CLASSIC_THEME.id ? `<div class="event-board-label"><span aria-hidden="true">${theme.emoji}</span> ${escape(theme.name)} event board</div>` : ''}
     ${showBonusLetters ? bonusLetterTrayMarkup() : ''}
-    <div class="puzzle-board" style="--longest-word:${longest}">
+    <div class="puzzle-board" data-decoration="${escape(theme.emoji)}" style="--longest-word:${longest}">
       <div class="puzzle-words">${words.map((word) => `<div class="puzzle-word">${[...word].map((letter) => {
         const shown = isLetterRevealed(game, letter)
         return `<span class="letter-tile ${shown ? 'revealed' : ''} ${/[A-Z]/i.test(letter) ? '' : 'punctuation'}" aria-label="${shown ? escape(letter) : 'Hidden letter'}">${shown ? escape(letter) : '<span aria-hidden="true">·</span>'}</span>`
@@ -418,7 +418,7 @@ function sealedBoardMarkup() {
   return `<section class="puzzle-section sealed-board" data-event="${theme.id}" aria-label="Puzzle board">
     <div class="puzzle-heading"><span class="category"><span aria-hidden="true">${theme.emoji}</span> BONUS PUZZLE</span><span class="puzzle-meta">SEALED</span></div>
     ${theme.id !== CLASSIC_THEME.id ? `<div class="event-board-label"><span aria-hidden="true">${theme.emoji}</span> ${escape(theme.name)} event board</div>` : ''}
-    <div class="puzzle-board sealed"><p>${icon('gift')}<span>${game.phase === 'bonus-category' ? 'Choose a category to set your bonus puzzle.' : 'Your bonus puzzle stays covered until your envelope is locked in. Spin first!'}</span></p></div>
+    <div class="puzzle-board sealed" data-decoration="${escape(theme.emoji)}"><p>${icon('gift')}<span>${game.phase === 'bonus-category' ? 'Choose a category to set your bonus puzzle.' : 'Your bonus puzzle stays covered until your envelope is locked in. Spin first!'}</span></p></div>
   </section>`
 }
 
