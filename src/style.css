@@ -103,6 +103,18 @@ h1, h2, h3, .brand { font-family: 'Outfit', sans-serif; }
 .segmented-control button { width: 50%; min-height: 43px; border-radius: 7px; background: transparent; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; color: #797e72; }
 .segmented-control button svg { width: 18px; height: 18px; }
 .segmented-control button.selected { background: #fffef8; box-shadow: 0 1px 5px #253c3514; color: var(--ink); }
+.theme-picker { border: 0; padding: 0; margin: 0 0 22px; }
+.theme-picker legend { font-size: 11px; font-weight: 600; margin-bottom: 10px; padding: 0; }
+.region-picker { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; color: #747d68; font-size: 10px; font-weight: 600; }
+.region-picker select { max-width: 66%; min-height: 38px; border: 1px solid #e0e3d7; border-radius: 8px; padding: 0 9px; color: var(--ink); background: #fffefb; font-size: 10px; }
+.theme-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-height: 240px; overflow-y: auto; padding: 2px; }
+.theme-note { margin-top: 8px; color: var(--muted); font-size: 9px; line-height: 1.5; }
+.theme-choice { min-width: 0; min-height: 70px; display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #e0e3d7; border-radius: 9px; background: #fffefb; text-align: left; }
+.theme-choice.selected { border-color: #728a63; background: #f1f5e9; box-shadow: 0 0 0 1px #728a63; }
+.theme-choice-emoji { display: grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; background: #f0f0e7; font-size: 19px; }
+.theme-choice > span:last-child { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.theme-choice strong { font-size: 10px; }
+.theme-choice small { color: var(--muted); font-size: 8px; line-height: 1.35; }
 .player-inputs { display: flex; flex-direction: column; gap: 12px; }
 .player-field { display: flex; gap: 13px; align-items: center; border: 1px solid #e0e3d7; border-radius: 10px; padding: 11px 13px; background: #fffefb; }
 .player-avatar { width: 37px; height: 39px; border-radius: 8px; display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
@@ -189,6 +201,43 @@ h1, h2, h3, .brand { font-family: 'Outfit', sans-serif; }
 .play-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 24px; align-items: start; }
 .puzzle-column { min-width: 0; }
 .puzzle-heading { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 15px 20px; background: #ebeddf; border: 1px solid #d9dfcb; border-bottom: 0; border-radius: 12px 12px 0 0; }
+.event-board-label { padding: 7px 12px; background: var(--event-accent); color: #fffdf6; font-size: 8px; font-weight: 800; letter-spacing: 1px; text-align: center; text-transform: uppercase; }
+.puzzle-section[data-event]:not([data-event="classic"]) { --event-accent: #8c9b6f; }
+.puzzle-section[data-event="new-year"] { --event-accent: #b68a36; }
+.puzzle-section[data-event="valentines"] { --event-accent: #bb5472; }
+.puzzle-section[data-event="spring"] { --event-accent: #7e9a57; }
+.puzzle-section[data-event="st-patricks"] { --event-accent: #328156; }
+.puzzle-section[data-event="summer"] { --event-accent: #d49b32; }
+.puzzle-section[data-event="fall"] { --event-accent: #bd7139; }
+.puzzle-section[data-event="halloween"] { --event-accent: #74529c; }
+.puzzle-section[data-event="thanksgiving"] { --event-accent: #a45b37; }
+.puzzle-section[data-event="winter"] { --event-accent: #5689a2; }
+.puzzle-section[data-event="christmas"] { --event-accent: #a8433e; }
+.puzzle-section[data-event]:not([data-event="classic"]) .puzzle-board { position: relative; overflow: hidden; padding-top: 40px; border-color: var(--event-accent); box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--event-accent), transparent 55%); }
+.puzzle-section[data-event]:not([data-event="classic"]) .puzzle-board::before,
+.puzzle-section[data-event]:not([data-event="classic"]) .puzzle-board::after { position: absolute; z-index: 1; top: 6px; color: #f7e7b8; font-size: 21px; line-height: 1; pointer-events: none; }
+.puzzle-section[data-event]:not([data-event="classic"]) .puzzle-board::before { content: attr(data-decoration); left: 12px; }
+.puzzle-section[data-event]:not([data-event="classic"]) .puzzle-board::after { content: '✧'; right: 12px; }
+.puzzle-section[data-event="new-year"] .puzzle-board::before { content: '✨'; }
+.puzzle-section[data-event="new-year"] .puzzle-board::after { content: '🎉'; }
+.puzzle-section[data-event="valentines"] .puzzle-board::before { content: '💌'; }
+.puzzle-section[data-event="valentines"] .puzzle-board::after { content: '♥'; }
+.puzzle-section[data-event="spring"] .puzzle-board::before { content: '🌷'; }
+.puzzle-section[data-event="spring"] .puzzle-board::after { content: '🦋'; }
+.puzzle-section[data-event="st-patricks"] .puzzle-board::before { content: '🍀'; }
+.puzzle-section[data-event="st-patricks"] .puzzle-board::after { content: '🌈'; }
+.puzzle-section[data-event="summer"] .puzzle-board::before { content: '☀️'; }
+.puzzle-section[data-event="summer"] .puzzle-board::after { content: '🍉'; }
+.puzzle-section[data-event="fall"] .puzzle-board::before { content: '🍁'; }
+.puzzle-section[data-event="fall"] .puzzle-board::after { content: '🍂'; }
+.puzzle-section[data-event="halloween"] .puzzle-board::before { content: '🎃'; }
+.puzzle-section[data-event="halloween"] .puzzle-board::after { content: '👻'; }
+.puzzle-section[data-event="thanksgiving"] .puzzle-board::before { content: '🌾'; }
+.puzzle-section[data-event="thanksgiving"] .puzzle-board::after { content: '🦃'; }
+.puzzle-section[data-event="winter"] .puzzle-board::before { content: '❄️'; }
+.puzzle-section[data-event="winter"] .puzzle-board::after { content: '☃️'; }
+.puzzle-section[data-event="christmas"] .puzzle-board::before { content: '🎄'; }
+.puzzle-section[data-event="christmas"] .puzzle-board::after { content: '🎁'; }
 .category { font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 9px; }
 .category > span { font-size: 16px; color: #779263; }
 .puzzle-meta { color: #727c65; font-size: 7px; letter-spacing: 1.2px; font-weight: 700; }
@@ -342,6 +391,7 @@ dialog .fair-play-note { padding-top: 14px; border-top: 1px solid #e3e5d5; font-
   .puzzle-heading { padding: 10px 13px; }
   .puzzle-meta { font-size: 7px; letter-spacing: .7px; }
   .puzzle-board { padding: 20px 10px 10px; }
+  .puzzle-section[data-event]:not([data-event="classic"]) .puzzle-board { padding-top: 34px; }
   .puzzle-words { min-height: 83px; gap: 10px 13px; }
   .puzzle-word { gap: 3px; }
   .letter-tile { width: min(30px, calc((100vw - 81px) / var(--longest-word) - 3px)); height: 36px; font-size: 22px; }
