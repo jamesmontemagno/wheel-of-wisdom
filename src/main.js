@@ -8,7 +8,7 @@ import {
 } from './game.js'
 import { createStorage, recordGame, leaderboard } from './storage.js'
 import { setupPWA } from './pwa.js'
-import { CLASSIC_THEME, activeThemeEvents, themeForId } from './events.js'
+import { CLASSIC_THEME, EVENT_REGIONS, activeThemeEvents, suggestedEventRegion, themeForId } from './events.js'
 
 const app = document.querySelector('#app')
 const preferenceKeys = {
@@ -79,6 +79,7 @@ let gameId
 let gameRecorded = false
 let lobbyPage = 'play'
 let selectedEventId = CLASSIC_THEME.id
+let selectedEventRegion = suggestedEventRegion()
 let storageFailed = false
 let spinning = false
 let wheelAngle = 0
@@ -217,7 +218,7 @@ function shell(content) {
 
 function renderLobby() {
   lobbyPage = 'play'
-  const activeEvents = activeThemeEvents()
+  const activeEvents = activeThemeEvents(new Date(), selectedEventRegion)
   if (selectedEventId !== CLASSIC_THEME.id && !activeEvents.some((event) => event.id === selectedEventId)) {
     selectedEventId = CLASSIC_THEME.id
   }
@@ -243,11 +244,18 @@ function renderLobby() {
         <button type="button" data-count="2" aria-pressed="${playerCount === 2}" class="${playerCount === 2 ? 'selected' : ''}">${icon('people')} 2 players</button>
         <button type="button" data-count="3" aria-pressed="${playerCount === 3}" class="${playerCount === 3 ? 'selected' : ''}">${icon('people')} 3 players</button>
       </div></fieldset>
-      <fieldset class="theme-picker"><legend>Choose your board</legend><div class="theme-choices">
+      <fieldset class="theme-picker"><legend>Choose your board</legend>
+        <label class="region-picker" for="event-region">Country or state
+          <select id="event-region">
+            <option value="WORLDWIDE" ${selectedEventRegion === 'WORLDWIDE' ? 'selected' : ''}>Worldwide celebrations</option>
+            ${EVENT_REGIONS.map((region) => `<option value="${region.id}" ${selectedEventRegion === region.id ? 'selected' : ''}>${escape(region.name)}</option>`).join('')}
+          </select>
+        </label>
+        <div class="theme-choices">
         ${themeChoices.map((theme) => `<button type="button" class="theme-choice ${selectedEventId === theme.id ? 'selected' : ''}" data-event-id="${theme.id}" aria-label="${escape(`${theme.name}: ${theme.description}`)}" aria-pressed="${selectedEventId === theme.id}">
           <span class="theme-choice-emoji" aria-hidden="true">${theme.emoji}</span><span><strong>${escape(theme.name)}</strong><small>${escape(theme.description)}</small></span>
         </button>`).join('')}
-      </div><p class="theme-note">Seasonal and holiday boards appear on their dates.</p></fieldset>
+        </div><p class="theme-note">More than 100 celebrations rotate in by local date. Country and state boards follow your selection; worldwide themes are always included.</p></fieldset>
       <form id="setup-form">
         <div class="player-inputs">${Array.from({ length: playerCount }, (_, i) => `<label class="player-field"><span class="player-avatar color-${i}">${String(i + 1).padStart(2, '0')}</span><span class="field-content"><span>PLAYER ${i + 1}</span><input name="player-${i}" aria-label="Player ${i + 1} name" maxlength="24" autocomplete="off" placeholder="Player ${i + 1}" value="${escape(names[i])}"></span><span class="field-spark" aria-hidden="true">${['✳', '✦', '✿'][i]}</span></label>`).join('')}</div>
         <div class="setup-note"><span aria-hidden="true">✧</span><span>New puzzles. Random categories.<br>A different game, every single time.</span></div>
@@ -277,6 +285,11 @@ function renderLobby() {
       document.querySelector(`[data-event-id="${selectedEventId}"]`).focus()
     }
   })
+  document.querySelector('#event-region').onchange = (event) => {
+    selectedEventRegion = event.target.value
+    renderLobby()
+    document.querySelector('#event-region').focus()
+  }
   document.querySelector('#setup-form').onsubmit = (event) => {
     event.preventDefault()
     readNames()

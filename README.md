@@ -73,7 +73,7 @@ The site is served from the custom domain **www.wheelofwisdom.app**. `public/CNA
 ## How to play
 
 - Enter player names, choose two or three players, and pass the device on each turn. Names and party size are remembered on this browser.
-- Choose the classic board or a currently available holiday or seasonal event board. New Year, Valentine’s Day, spring, St. Patrick’s Day, summer, fall, Halloween, Thanksgiving, winter, and Christmas Week themes follow the device’s local calendar date; the seasonal themes use Northern Hemisphere dates. Event boards add matching decorations to every puzzle board.
+- Choose the classic board or from 100+ holiday, seasonal, international-observance, country, and U.S. state event boards. Themes follow the device’s local calendar date, and the region selector filters country- and state-specific events; the initial country suggestion comes from the browser language and can be changed. Seasonal themes use Northern Hemisphere dates. Event boards add matching decorations to every puzzle board.
 - A bold banner plus a **30-second turn clock** shows whose turn it is. Run out of time and play passes on; winnings are untouched. The clock pauses while the wheel spins or a dialog is open, and restarts after every successful action.
 - Spin the animated wheel, then choose a consonant. Each match earns the wheel value. Wrong guesses pass the turn.
 - Each round uses a bigger wheel with richer cash: 12 spaces in round one, 14 in round two, 16 in round three, and 18 in round four.
