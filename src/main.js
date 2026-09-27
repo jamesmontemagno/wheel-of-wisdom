@@ -94,12 +94,26 @@ let turnKey = ''
 let turnRemaining = TURN_SECONDS * 1000
 let turnLastTick = 0
 let dialogReturnFocus
+const pendingNativeHistorySaves = new Set()
 
-if (isNativeHost && browserHistory.length) {
-  Promise.all(browserHistory.map((entry) => window.__wheelOfWisdomBridge.saveHistory(entry)))
-    .then(() => checkSaved(storage.clearHistory()))
-    .catch(() => checkSaved(false))
+function saveNativeHistory(entry) {
+  const saving = window.__wheelOfWisdomBridge.saveHistory(entry)
+  pendingNativeHistorySaves.add(saving)
+  saving.then(
+    () => pendingNativeHistorySaves.delete(saving),
+    () => {
+      pendingNativeHistorySaves.delete(saving)
+      checkSaved(false)
+    },
+  )
+  return saving
 }
+
+const historyMigration = isNativeHost && browserHistory.length
+  ? Promise.allSettled(browserHistory.map(saveNativeHistory)).then((results) => {
+    checkSaved(results.every((result) => result.status === 'fulfilled') && storage.clearHistory())
+  })
+  : Promise.resolve()
 
 function activeWheel() {
   if (!game) return WHEEL_SEGMENTS
@@ -309,8 +323,27 @@ function renderHistory() {
         </li>`).join('')}</ol>
       </section>
     </div>` : `<div class="history-card history-empty">${icon('trophy')}<h2>Your first chapter awaits.</h2><p>Finish a game to save the scores and start your leaderboard.</p></div>`}
+    ${history.length ? '<button class="text-button history-clear" id="clear-history" type="button">Delete past history</button>' : ''}
     <p class="history-note">Pretend prizes, real bragging rights. ${isNativeHost ? 'Game history is stored in this app’s local database.' : 'Clearing browser data removes saved names and history.'}</p>
   </section>`)
+  document.querySelector('#clear-history')?.addEventListener('click', confirmClearHistory)
+}
+
+function confirmClearHistory() {
+  const dialog = showDialog('Delete past history?', `<p>This permanently removes completed games and leaderboard scores from this device. Saved player names and puzzle boards are not affected.</p><button class="button button-primary" id="confirm-clear-history" type="button">Delete history</button><button class="text-button" type="button" data-close>Keep history</button>`)
+  dialog.querySelector('#confirm-clear-history').onclick = async () => {
+   dialog.close()
+   try {
+     await historyMigration
+     await Promise.allSettled([...pendingNativeHistorySaves])
+     if (isNativeHost) await window.__wheelOfWisdomBridge.clearHistory()
+     if (!storage.clearHistory()) throw new Error('The browser could not clear saved history.')
+     history = []
+     renderHistory()
+   } catch {
+     showDialog('History was not deleted', '<p>There was a problem removing saved history. Please try again.</p><button class="button button-primary" data-close>Got it</button>')
+   }
+  }
 }
 
 function bonusLetterTrayMarkup() {
@@ -459,7 +492,7 @@ function renderGame() {
     history = recordGame(history, game, gameId)
     gameRecorded = true
     if (isNativeHost) {
-      window.__wheelOfWisdomBridge.saveHistory(history[0]).catch(() => checkSaved(false))
+      saveNativeHistory(history[0])
     } else {
       checkSaved(storage.saveHistory(history))
     }

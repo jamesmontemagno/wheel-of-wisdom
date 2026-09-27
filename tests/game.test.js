@@ -639,6 +639,25 @@ test('new games reset old puzzle history before the bonus-eligible pool is exhau
   assert.equal(game.usedPuzzleIds.length, 1);
 });
 
+test('new games reset puzzle history when four main boards could leave fewer than three bonus categories', () => {
+  const eligible = PUZZLES.filter(isBonusPuzzleEligible);
+  const crowdedCategory = eligible.find((puzzle) =>
+    eligible.filter((candidate) => candidate.category === puzzle.category).length >= 5,
+  ).category;
+  const available = eligible.filter((puzzle) => puzzle.category === crowdedCategory).slice(0, 5);
+  const availableIds = new Set(available.map((puzzle) => puzzle.id));
+  const seen = PUZZLES.filter((puzzle) => !availableIds.has(puzzle.id)).map((puzzle) => puzzle.id);
+  const game = createGame(['Ada', 'Bo'], fixed, seen);
+
+  assert.equal(PUZZLES.length - seen.length, PUZZLES_PER_GAME);
+  assert.deepEqual(game.usedPuzzleIds, [game.puzzle.id]);
+  for (let round = 1; round <= FINAL_ROUND; round += 1) {
+    finishRound(game);
+    nextRound(game, fixed);
+  }
+  assert.equal(new Set(game.bonusCategoryOptions.map((puzzle) => puzzle.category)).size, BONUS_CATEGORY_CHOICES);
+});
+
 test('selection excludes exhausted categories before choosing a category', () => {
   const game = gameWith();
   const firstCategory = PUZZLES[0].category;

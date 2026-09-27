@@ -328,11 +328,22 @@ export function usablePuzzleHistory(seenPuzzleIds) {
 function historyForNewGame(seenPuzzleIds) {
   const seen = usablePuzzleHistory(seenPuzzleIds);
   const seenIds = new Set(seen);
-  const remainingBonusPuzzles = PUZZLES.filter(
-    (puzzle) => isBonusPuzzleEligible(puzzle) && !seenIds.has(puzzle.id),
-  ).length;
-  // A full game consumes one puzzle per main round and reserves one for the bonus round.
-  return remainingBonusPuzzles >= PUZZLES_PER_GAME ? seen : [];
+  const bonusPuzzlesByCategory = new Map();
+  for (const puzzle of PUZZLES) {
+    if (!seenIds.has(puzzle.id) && isBonusPuzzleEligible(puzzle)) {
+      bonusPuzzlesByCategory.set(
+        puzzle.category,
+        (bonusPuzzlesByCategory.get(puzzle.category) ?? 0) + 1,
+      );
+    }
+  }
+  const remainingBonusPuzzles = [...bonusPuzzlesByCategory.values()].sort((a, b) => b - a);
+  const puzzlesNeededBeforeBonus = FINAL_ROUND;
+  const minimumPuzzlesToLeaveOnlyTwoCategories = remainingBonusPuzzles
+    .slice(2)
+    .reduce((total, count) => total + count, 0);
+  // Reserve enough eligible puzzles that four main boards cannot exhaust the bonus categories.
+  return minimumPuzzlesToLeaveOnlyTwoCategories > puzzlesNeededBeforeBonus ? seen : [];
 }
 
 export function createGame(names, rng = Math.random, seenPuzzleIds = []) {
