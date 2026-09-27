@@ -330,7 +330,7 @@ function renderHistory() {
 }
 
 function confirmClearHistory() {
-  const dialog = showDialog('Delete past history?', `<p>This permanently removes completed games and leaderboard scores from this device. Saved player names and puzzle boards are not affected.</p><button class="button button-primary" id="confirm-clear-history" type="button">Delete history</button><button class="text-button" type="button" data-close>Keep history</button>`)
+  const dialog = showDialog('Delete history?', `<p>This permanently removes completed games and leaderboard scores from this device. Saved player names and puzzle boards are not affected.</p><button class="button button-primary" id="confirm-clear-history" type="button">Delete history</button><button class="text-button" type="button" data-close>Keep history</button>`)
   dialog.querySelector('#confirm-clear-history').onclick = async () => {
     dialog.close()
     try {
