@@ -658,6 +658,31 @@ test('new games reset puzzle history when four main boards could leave fewer tha
   assert.equal(new Set(game.bonusCategoryOptions.map((puzzle) => puzzle.category)).size, BONUS_CATEGORY_CHOICES);
 });
 
+test('played boards remain skipped when four rounds cannot exhaust three bonus categories', () => {
+  const eligible = PUZZLES.filter(isBonusPuzzleEligible);
+  const byCategory = new Map();
+  eligible.forEach((puzzle) => {
+    const category = byCategory.get(puzzle.category) ?? [];
+    category.push(puzzle);
+    byCategory.set(puzzle.category, category);
+  });
+  const categoryGroups = [...byCategory.entries()].sort((a, b) => b[1].length - a[1].length);
+  const available = categoryGroups.slice(0, 7).flatMap(([, puzzles], index) =>
+    puzzles.slice(0, [3, 2, 1, 1, 1, 1, 1][index]),
+  );
+  const availableIds = new Set(available.map((puzzle) => puzzle.id));
+  const seen = PUZZLES.filter((puzzle) => !availableIds.has(puzzle.id)).map((puzzle) => puzzle.id);
+  const game = createGame(['Ada', 'Bo'], fixed, seen);
+
+  assert.equal(PUZZLES.length - seen.length, 10);
+  assert.equal(game.usedPuzzleIds.length, seen.length + 1);
+  for (let round = 1; round <= FINAL_ROUND; round += 1) {
+    finishRound(game);
+    nextRound(game, fixed);
+  }
+  assert.equal(new Set(game.bonusCategoryOptions.map((puzzle) => puzzle.category)).size, BONUS_CATEGORY_CHOICES);
+});
+
 test('selection excludes exhausted categories before choosing a category', () => {
   const game = gameWith();
   const firstCategory = PUZZLES[0].category;

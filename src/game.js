@@ -337,13 +337,12 @@ function historyForNewGame(seenPuzzleIds) {
       );
     }
   }
-  const remainingBonusPuzzles = [...bonusPuzzlesByCategory.values()].sort((a, b) => b - a);
-  const puzzlesNeededBeforeBonus = FINAL_ROUND;
-  const minimumPuzzlesToLeaveOnlyTwoCategories = remainingBonusPuzzles
+  const bonusCategoryCounts = [...bonusPuzzlesByCategory.values()].sort((a, b) => b - a);
+  const minimumDrawsToLeaveOnlyTwoBonusCategories = bonusCategoryCounts
     .slice(2)
     .reduce((total, count) => total + count, 0);
-  // Reserve enough eligible puzzles that four main boards cannot exhaust the bonus categories.
-  return minimumPuzzlesToLeaveOnlyTwoCategories > puzzlesNeededBeforeBonus ? seen : [];
+  // Four main boards cannot reduce the bonus pool to two categories unless they consume this many.
+  return minimumDrawsToLeaveOnlyTwoBonusCategories > FINAL_ROUND ? seen : [];
 }
 
 export function createGame(names, rng = Math.random, seenPuzzleIds = []) {
