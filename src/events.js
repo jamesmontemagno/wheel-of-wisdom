@@ -26,7 +26,7 @@ export const THEME_EVENTS = Object.freeze([
   event('fall', 'Fall', '🍂', 'Cozy colors for the Northern Hemisphere fall.', [9, 1], [11, 30]),
   event('halloween', 'Halloween', '🎃', 'A delightfully spooky board.', [10, 24], [10, 31]),
   event('thanksgiving', 'Thanksgiving', '🦃', 'A harvest-season board for Thanksgiving.', [11, 20], [11, 27], ['US']),
-  event('winter', 'Winter', '❄️', 'Snowy details for the Northern Hemisphere winter.', [12, 1], [2, 28]),
+  event('winter', 'Winter', '❄️', 'Snowy details for the Northern Hemisphere winter.', [12, 1], [2, 29]),
   event('christmas', 'Christmas Week', '🎄', 'Festive lights and evergreen cheer.', [12, 18], [12, 26]),
 
   event('world-braille-day', 'World Braille Day', '⠿', 'Celebrate access, reading, and a world of stories.', [1, 4]),
@@ -82,7 +82,7 @@ export const THEME_EVENTS = Object.freeze([
   event('world-food-day', 'World Food Day', '🥕', 'A delicious board celebrating food and community.', [10, 16]),
   event('alaska-day', 'Alaska Day', '🐻', 'A wild, northern celebration of the Last Frontier.', [10, 18], [10, 19], ['US-AK']),
   event('world-pasta-day', 'World Pasta Day', '🍝', 'Twirl into a tasty game night.', [10, 25]),
-  event('nevada-day', 'Nevada Day Week', '🎰', 'A little desert sparkle for the Silver State.', [10, 25], [10, 31], ['US-NV']),
+  event('nevada-day-week', 'Nevada Day Week', '🎰', 'A little desert sparkle for the Silver State.', [10, 25], [10, 31], ['US-NV']),
   event('day-of-dead', 'Day of the Dead', '💀', 'Colorful marigolds and joyful remembrance.', [11, 1], [11, 2], ['MX']),
   event('japan-culture-day', 'Culture Day', '🎎', 'Celebrate art and culture in Japan.', [11, 3], [11, 4], ['JP']),
   event('world-kindness-day', 'World Kindness Day', '💛', 'A little kindness makes every game better.', [11, 13]),
@@ -201,8 +201,7 @@ export function activeThemeEvents(date = new Date(), selectedRegion = 'WORLDWIDE
     const { from, to } = theme
     const orderedWindow = compareMonthDay(from, to) <= 0
     const afterStart = compareMonthDay(today, from) >= 0
-    const isLeapDay = theme.id === 'winter' && today[0] === 2 && today[1] === 29
-    const beforeEnd = isLeapDay || compareMonthDay(today, to) <= 0
+    const beforeEnd = compareMonthDay(today, to) <= 0
     return orderedWindow ? afterStart && beforeEnd : afterStart || beforeEnd
   })
 }

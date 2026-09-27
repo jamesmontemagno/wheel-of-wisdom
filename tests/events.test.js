@@ -46,6 +46,7 @@ test('holiday events are available only within their local calendar date windows
   assert.ok(activeIds(11, 27, 2026, 'US').includes('thanksgiving'))
   assert.ok(!activeIds(11, 28, 2026, 'US').includes('thanksgiving'))
   assert.ok(!activeIds(12, 17).includes('christmas'))
+  assert.ok(activeIds(12, 18).includes('christmas'))
   assert.ok(activeIds(12, 26).includes('christmas'))
   assert.ok(!activeIds(12, 27).includes('christmas'))
 })
@@ -95,7 +96,7 @@ test('regional celebrations respect country and state selections while worldwide
   assert.ok(idsFor(6, 14, 'US').includes('us-flag-day'))
   assert.ok(idsFor(7, 24, 'NZ').includes('new-zealand-matariki'))
   assert.ok(!idsFor(7, 25, 'NZ').includes('new-zealand-matariki'))
-  assert.ok(idsFor(10, 30, 'US-NV').includes('nevada-day'))
+  assert.ok(idsFor(10, 30, 'US-NV').includes('nevada-day-week'))
 })
 
 test('browser language suggests a supported country and safely falls back worldwide', () => {
