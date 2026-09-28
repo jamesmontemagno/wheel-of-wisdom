@@ -329,7 +329,11 @@ function showThemePicker() {
     dialog.close()
     startGame()
   }
-  dialog.querySelector('.theme-choice.selected')?.focus()
+  requestAnimationFrame(() => {
+    if (dialog.open) {
+      (dialog.querySelector('.theme-choice.selected') ?? dialog.querySelector('#event-region'))?.focus()
+    }
+  })
 }
 
 // Boards are remembered across games so the same puzzle is not shown again.
