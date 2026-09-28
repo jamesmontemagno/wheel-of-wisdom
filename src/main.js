@@ -8,7 +8,7 @@ import {
 } from './game.js'
 import { createStorage, recordGame, leaderboard } from './storage.js'
 import { setupPWA } from './pwa.js'
-import { CLASSIC_THEME, EVENT_REGIONS, activeThemeEvents, suggestedEventRegion, themeForId } from './events.js'
+import { CLASSIC_THEME, activeThemeEventsForAllRegions, themeForId } from './events.js'
 
 const app = document.querySelector('#app')
 const preferenceKeys = {
@@ -79,7 +79,6 @@ let gameId
 let gameRecorded = false
 let lobbyPage = 'play'
 let selectedEventId = CLASSIC_THEME.id
-let selectedEventRegion = suggestedEventRegion()
 let storageFailed = false
 let spinning = false
 let wheelAngle = 0
@@ -270,7 +269,7 @@ function renderLobby() {
 }
 
 function renderThemeChoices(dialog) {
-  const activeEvents = activeThemeEvents(new Date(), selectedEventRegion)
+  const activeEvents = activeThemeEventsForAllRegions()
   if (selectedEventId !== CLASSIC_THEME.id && !activeEvents.some((event) => event.id === selectedEventId)) {
     selectedEventId = CLASSIC_THEME.id
   }
@@ -303,16 +302,10 @@ function startGame() {
 }
 
 function showThemePicker() {
-  const dialog = showDialog('Choose your board', `<p>Pick a classic board or one of the celebrations active today for your selected location.</p>
+  const dialog = showDialog('Choose your board', `<p>Pick a classic board or one of the celebrations active today.</p>
     <fieldset class="theme-picker"><legend>Active themes</legend>
-      <label class="region-picker" for="event-region">Country or state
-        <select id="event-region">
-          <option value="WORLDWIDE" ${selectedEventRegion === 'WORLDWIDE' ? 'selected' : ''}>Worldwide celebrations</option>
-          ${EVENT_REGIONS.map((region) => `<option value="${region.id}" ${selectedEventRegion === region.id ? 'selected' : ''}>${htmlEscape(region.name)}</option>`).join('')}
-        </select>
-      </label>
       <div class="theme-choices"></div>
-      <p class="theme-note">Worldwide themes are always included. Country and state themes appear when they are active today.</p>
+      <p class="theme-note">Worldwide, country, and state boards are shown when active today.</p>
     </fieldset>
     <button class="button button-primary" id="start-selected-game" type="button">Let’s play ${icon('arrow')}</button>`)
   dialog.classList.add('theme-dialog')
@@ -322,10 +315,6 @@ function showThemePicker() {
     if (!startingGame) dialogReturnFocus?.focus()
   }
   renderThemeChoices(dialog)
-  dialog.querySelector('#event-region').onchange = (event) => {
-    selectedEventRegion = event.target.value
-    renderThemeChoices(dialog)
-  }
   dialog.querySelector('#start-selected-game').onclick = () => {
     startingGame = true
     dialog.close()
@@ -333,7 +322,7 @@ function showThemePicker() {
   }
   requestAnimationFrame(() => {
     if (dialog.open) {
-      (dialog.querySelector('.theme-choice.selected') ?? dialog.querySelector('#event-region'))?.focus()
+      (dialog.querySelector('.theme-choice.selected') ?? dialog.querySelector('.theme-choice'))?.focus()
     }
   })
 }

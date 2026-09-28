@@ -1,7 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  CLASSIC_THEME, EVENT_REGIONS, THEME_EVENTS, activeThemeEvents, suggestedEventRegion, themeForId,
+  CLASSIC_THEME, EVENT_REGIONS, THEME_EVENTS, activeThemeEvents, activeThemeEventsForAllRegions,
+  suggestedEventRegion, themeForId,
 } from '../src/events.js'
 
 const localDate = (month, day, year = 2026) => new Date(year, month - 1, day)
@@ -97,6 +98,16 @@ test('regional celebrations respect country and state selections while worldwide
   assert.ok(idsFor(7, 24, 'NZ').includes('new-zealand-matariki'))
   assert.ok(!idsFor(7, 25, 'NZ').includes('new-zealand-matariki'))
   assert.ok(idsFor(10, 30, 'US-NV').includes('nevada-day-week'))
+})
+
+test('all active boards include worldwide, country, and state celebrations without duplicates', () => {
+  const themes = activeThemeEventsForAllRegions(localDate(7, 4))
+  const ids = themes.map(({ id }) => id)
+
+  assert.ok(ids.includes('summer'))
+  assert.ok(ids.includes('us-independence'))
+  assert.ok(ids.includes('idaho-statehood'))
+  assert.equal(new Set(ids).size, ids.length)
 })
 
 test('browser language suggests a supported country and safely falls back worldwide', () => {
