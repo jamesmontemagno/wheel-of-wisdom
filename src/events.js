@@ -203,8 +203,10 @@ export function activeThemeEvents(date = new Date(), selectedRegion = 'WORLDWIDE
 }
 
 export function activeThemeEventsForAllRegions(date = new Date()) {
-  const today = [date.getMonth() + 1, date.getDate()]
-  return THEME_EVENTS.filter((theme) => isThemeActive(theme, today))
+  const regions = ['WORLDWIDE', ...EVENT_REGIONS.map(({ id }) => id)]
+  return [...new Map(
+    regions.flatMap((region) => activeThemeEvents(date, region)).map((theme) => [theme.id, theme]),
+  ).values()]
 }
 
 function isThemeActive(theme, today) {
