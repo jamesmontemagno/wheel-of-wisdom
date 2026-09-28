@@ -308,12 +308,18 @@ h1, h2, h3, .brand { font-family: 'Outfit', sans-serif; }
 .final-rankings > div > span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .final-rankings strong { margin-left: auto; white-space: nowrap; }
 .rank { width: 23px; flex-shrink: 0; color: #8b967d; }
-dialog { width: min(480px, calc(100% - 32px)); max-height: calc(100dvh - 48px); border: 1px solid #e1e1ce; border-radius: 16px; padding: 32px; color: var(--ink); background: #fffdf4; box-shadow: 0 20px 80px #15291e33; }
+dialog { width: min(480px, calc(100% - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; border: 1px solid #e1e1ce; border-radius: 16px; padding: 32px; color: var(--ink); background: #fffdf4; box-shadow: 0 20px 80px #15291e33; }
+dialog.theme-dialog { width: min(560px, calc(100% - 32px)); }
 dialog::backdrop { background: #1d382d80; backdrop-filter: blur(5px); }
 .dialog-close { float: right; width: 32px; height: 32px; margin: -13px -13px 0 7px; }
 dialog h2 { font-size: 27px; font-weight: 550; letter-spacing: -.5px; margin: 0 0 14px; }
 dialog p { font-size: 13px; color: #747d68; line-height: 1.7; margin-bottom: 18px; }
 dialog label { font-size: 12px; font-weight: 600; }
+dialog .theme-picker { margin: 20px 0; }
+dialog .theme-choices { max-height: min(38dvh, 320px); }
+dialog .theme-choice { min-height: 64px; }
+dialog .theme-choice strong { font-size: 11px; }
+dialog .theme-choice small { font-size: 9px; }
 .text-button { display: block; background: transparent; padding: 16px; margin: auto; font-size: 12px; color: #647357; text-decoration: underline; text-underline-offset: 4px; }
 .rules-list { padding-left: 18px; font-size: 12px; line-height: 1.75; color: #6b7660; }
 .rules-list li { padding-left: 4px; margin-bottom: 12px; }
