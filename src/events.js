@@ -198,12 +198,23 @@ export function activeThemeEvents(date = new Date(), selectedRegion = 'WORLDWIDE
   const today = [date.getMonth() + 1, date.getDate()]
   return THEME_EVENTS.filter((theme) => {
     if (!regionMatches(theme, selectedRegion)) return false
-    const { from, to } = theme
-    const orderedWindow = compareMonthDay(from, to) <= 0
-    const afterStart = compareMonthDay(today, from) >= 0
-    const beforeEnd = compareMonthDay(today, to) <= 0
-    return orderedWindow ? afterStart && beforeEnd : afterStart || beforeEnd
+    return isThemeActive(theme, today)
   })
+}
+
+export function activeThemeEventsForAllRegions(date = new Date()) {
+  const regions = ['WORLDWIDE', ...EVENT_REGIONS.map(({ id }) => id)]
+  return [...new Map(
+    regions.flatMap((region) => activeThemeEvents(date, region)).map((theme) => [theme.id, theme]),
+  ).values()]
+}
+
+function isThemeActive(theme, today) {
+  const { from, to } = theme
+  const orderedWindow = compareMonthDay(from, to) <= 0
+  const afterStart = compareMonthDay(today, from) >= 0
+  const beforeEnd = compareMonthDay(today, to) <= 0
+  return orderedWindow ? afterStart && beforeEnd : afterStart || beforeEnd
 }
 
 export function themeForId(id) {
