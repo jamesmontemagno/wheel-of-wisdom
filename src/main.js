@@ -316,9 +316,10 @@ function showThemePicker() {
     </fieldset>
     <button class="button button-primary" id="start-selected-game" type="button">Let’s play ${icon('arrow')}</button>`)
   dialog.classList.add('theme-dialog')
+  let startingGame = false
   dialog.onclose = () => {
     dialog.classList.remove('theme-dialog')
-    dialogReturnFocus?.focus()
+    if (!startingGame) dialogReturnFocus?.focus()
   }
   renderThemeChoices(dialog)
   dialog.querySelector('#event-region').onchange = (event) => {
@@ -326,6 +327,7 @@ function showThemePicker() {
     renderThemeChoices(dialog)
   }
   dialog.querySelector('#start-selected-game').onclick = () => {
+    startingGame = true
     dialog.close()
     startGame()
   }

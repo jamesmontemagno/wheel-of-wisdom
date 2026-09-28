@@ -316,7 +316,7 @@ dialog h2 { font-size: 27px; font-weight: 550; letter-spacing: -.5px; margin: 0 
 dialog p { font-size: 13px; color: #747d68; line-height: 1.7; margin-bottom: 18px; }
 dialog label { font-size: 12px; font-weight: 600; }
 dialog .theme-picker { margin: 20px 0; }
-dialog .theme-choices { max-height: min(38dvh, 320px); }
+dialog .theme-choices { max-height: min(38dvh, 320px); overflow-y: auto; }
 dialog .theme-choice { min-height: 64px; }
 dialog .theme-choice strong { font-size: 11px; }
 dialog .theme-choice small { font-size: 9px; }
