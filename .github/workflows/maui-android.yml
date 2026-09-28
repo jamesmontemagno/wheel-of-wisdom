@@ -99,10 +99,10 @@ jobs:
       - name: Decode Android keystore
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_release }}
         env:
-          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_PLAYSTORE_KEYSTORE }}
         run: |
           if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
-            echo "ANDROID_KEYSTORE secret is required for a release build" >&2
+            echo "ANDROID_PLAYSTORE_KEYSTORE secret is required for a release build" >&2
             exit 1
           fi
 
@@ -111,11 +111,12 @@ jobs:
       - name: Publish signed Android App Bundle
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_release }}
         env:
-          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_PLAYSTORE_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_PLAYSTORE_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_PLAYSTORE_KEY_PASSWORD }}
         run: |
-          if [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ]; then
-            echo "ANDROID_KEYSTORE_PASSWORD and ANDROID_KEY_ALIAS secrets are required" >&2
+          if [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+            echo "ANDROID_PLAYSTORE_KEYSTORE_PASSWORD, ANDROID_PLAYSTORE_KEY_ALIAS, and ANDROID_PLAYSTORE_KEY_PASSWORD secrets are required" >&2
             exit 1
           fi
 
@@ -129,7 +130,7 @@ jobs:
             -p:AndroidKeyStore=true \
             -p:AndroidSigningKeyStore="${{ runner.temp }}/wheelofwisdom.keystore" \
             -p:AndroidSigningKeyAlias="$KEY_ALIAS" \
-            -p:AndroidSigningKeyPass=env:KEYSTORE_PASSWORD \
+            -p:AndroidSigningKeyPass=env:KEY_PASSWORD \
             -p:AndroidSigningStorePass=env:KEYSTORE_PASSWORD
 
       - name: Locate Android App Bundle
