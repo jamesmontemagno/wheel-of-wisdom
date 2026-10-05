@@ -69,6 +69,7 @@ The site is served from the custom domain **www.wheelofwisdom.app**. `public/CNA
 - `public/robots.txt` and `public/sitemap.xml` are served from the site root and reference the same domain.
 - `public/social-card.png` (1200×630) is the Open Graph and Twitter share image. Edit `assets/social-card.svg` and rasterize it back to that PNG at 1200×630 to change the card.
 - Absolute URLs are used in metadata, so update them all if the domain ever changes.
+- `assets/app-store/` holds the App Store listing: `metadata.md` (name, subtitle, description, keywords, privacy, and review notes), promo screenshots for iPhone (1284×2778, `iphone-6.5/`) and iPad (2064×2752, `ipad-13/`), and the `screenshots.html` / `screenshots-ipad.html` templates they are rendered from.
 
 ## How to play
 

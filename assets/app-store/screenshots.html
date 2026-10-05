@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Wheel of Wisdom – App Store screenshots</title>
+<!--
+  App Store screenshot template (1284 × 2778, iPhone 6.5"/6.7" display).
+  Open with ?slide=1 … ?slide=4 and capture the viewport at exactly 1284 × 2778.
+  See assets/app-store/metadata.md for the render command.
+-->
+<style>
+  @font-face { font-family: Outfit; src: url('../../src/fonts/outfit-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+  @font-face { font-family: 'DM Sans'; src: url('../../src/fonts/dm-sans-latin-wght-normal.woff2') format('woff2'); font-weight: 100 1000; }
+
+  :root { --ink: #283f34; --green: #284b3b; --orange: #bf482d; --cream: #f8f6ef; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1284px; height: 2778px; overflow: hidden; }
+  body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .slide { position: relative; width: 1284px; height: 2778px; overflow: hidden; background: var(--bg); color: var(--fg); }
+  .slide::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 22px; background: linear-gradient(90deg, #bf482d, #e7ab65 35%, #a8cdbb 70%, #284b3b); z-index: 5; }
+
+  .theme-green  { --bg: radial-gradient(120% 70% at 50% 0%, #34604c 0%, #284b3b 55%, #1d382c 100%); --fg: #f8f6ef; --accent: #f1c27d; --sub: #cfe0d4; --chip-bg: #ffffff14; --chip-line: #ffffff2e; }
+  .theme-orange { --bg: radial-gradient(120% 70% at 50% 0%, #d65f40 0%, #bf482d 55%, #9c3922 100%); --fg: #fff9e9; --accent: #283f34; --sub: #ffe3d2; --chip-bg: #ffffff1c; --chip-line: #ffffff40; }
+  .theme-cream  { --bg: radial-gradient(120% 70% at 50% 0%, #fffdf6 0%, #f8f6ef 55%, #efeadb 100%); --fg: #283f34; --accent: #bf482d; --sub: #5d6a5f; --chip-bg: #ffffffb0; --chip-line: #e2e2d6; }
+
+  .copy { position: absolute; top: 150px; left: 0; right: 0; text-align: center; padding: 0 90px; z-index: 4; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 18px; font-weight: 700; font-size: 36px; letter-spacing: 9px; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: Outfit, sans-serif; font-weight: 700; font-size: 128px; line-height: .98; letter-spacing: -4px; margin-top: 34px; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { margin: 36px auto 0; max-width: 1000px; font-size: 44px; line-height: 1.38; color: var(--sub); font-weight: 500; }
+
+  .phone { position: absolute; left: 50%; width: 1000px; transform: translateX(-50%); top: 740px; z-index: 3;
+           padding: 24px; border-radius: 150px; background: linear-gradient(145deg, #3c4a43, #11181a 40%, #2b3833); box-shadow: 0 60px 120px #0006, 0 0 0 4px #5b6b62 inset; }
+  .screen { position: relative; border-radius: 126px; overflow: hidden; aspect-ratio: 1179 / 2556; background: #f8f6ef; }
+  .screen img { display: block; width: 100%; height: 100%; }
+  .statusbar { position: absolute; top: 0; left: 0; right: 0; height: 125px; background: #f8f6ef; display: flex; align-items: center; justify-content: space-between; padding: 14px 92px 0 112px; color: #111; font-weight: 700; font-size: 45px; }
+  .island { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); width: 316px; height: 92px; border-radius: 50px; background: #000; }
+  .status-icons { display: flex; gap: 16px; align-items: center; }
+  .status-icons svg { height: 34px; }
+
+  .deco-wheel { position: absolute; z-index: 1; }
+  .sparkle { position: absolute; z-index: 2; color: var(--accent); }
+  .badge { position: absolute; z-index: 6; width: 300px; height: 300px; border-radius: 50%; display: grid; place-items: center; text-align: center;
+           background: #f1e7a6; color: #283f34; font-family: Outfit, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.12; letter-spacing: 2px; text-transform: uppercase;
+           box-shadow: 0 24px 50px #0003, 0 0 0 10px #f8f6ef88; transform: rotate(var(--rot, 8deg)); }
+  .badge small { display: block; font-size: 70px; letter-spacing: -1px; }
+
+  .feature-wheel { position: absolute; left: 50%; top: 820px; transform: translateX(-50%); z-index: 3; filter: drop-shadow(0 50px 70px #0005); }
+  .feature-list { position: absolute; left: 90px; right: 90px; bottom: 140px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; z-index: 4; }
+  .feature { padding: 40px 42px; border-radius: 48px; background: var(--chip-bg); border: 3px solid var(--chip-line); color: var(--fg); }
+  .feature .icon { font-size: 66px; line-height: 1; }
+  .feature strong { display: block; margin-top: 18px; font-family: Outfit, sans-serif; font-size: 50px; line-height: 1.05; letter-spacing: -1px; }
+  .feature span { display: block; margin-top: 12px; font-size: 34px; line-height: 1.35; color: var(--sub); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<template id="phone-tpl">
+  <div class="phone">
+    <div class="screen">
+      <img alt="" />
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="status-icons">
+          <svg viewBox="0 0 54 34" fill="#111"><rect x="0" y="22" width="9" height="12" rx="2"/><rect x="15" y="15" width="9" height="19" rx="2"/><rect x="30" y="8" width="9" height="26" rx="2"/><rect x="45" y="0" width="9" height="34" rx="2"/></svg>
+          <svg viewBox="0 0 48 34" fill="#111"><path d="M24 34l-7-8a10 10 0 0114 0z"/><path d="M24 15a19 19 0 0113.5 5.6l-4 4.4a13 13 0 00-19 0l-4-4.4A19 19 0 0124 15z"/><path d="M24 0a35 35 0 0124 9.6l-4 4.4a29 29 0 00-40 0l-4-4.4A35 35 0 0124 0z"/></svg>
+          <svg viewBox="0 0 80 36"><rect x="2" y="2" width="68" height="32" rx="10" fill="none" stroke="#111" stroke-width="3" opacity=".45"/><rect x="7" y="7" width="58" height="22" rx="6" fill="#111"/><rect x="73" y="12" width="5" height="12" rx="2.5" fill="#111" opacity=".45"/></svg>
+        </span>
+      </div>
+      <div class="island"></div>
+    </div>
+  </div>
+</template>
+
+<script src="art.js"></script>
+<script>
+  const slides = {
+    1: {
+      theme: 'green', shot: '../IMG_3609.png',
+      eyebrow: 'Pass &amp; play', title: 'Game night<br><em>in your pocket.</em>',
+      sub: 'Spin the wheel and solve word puzzles with 2–3 friends on one phone.',
+      wheels: [{ size: 1100, left: -470, top: 1500, opacity: .18 }, { size: 700, left: 960, top: 560, opacity: .12 }],
+      badge: { html: '<div><small>2–3</small>players<br>one phone</div>', left: 945, top: 1640, rot: '10deg' },
+    },
+    2: {
+      theme: 'orange', shot: '../IMG_3611.png',
+      eyebrow: 'Round and round', title: 'Spin it.<br><em>Win it.</em>',
+      sub: 'Cash wedges, surprise trips, mystery prizes… and the dreaded Bankrupt.',
+      wheels: [{ size: 1200, left: 560, top: 1500, opacity: .2 }],
+      badge: { html: '<div>Bigger<br>wheel<br>every<br>round</div>', left: 25, top: 2150, rot: '-9deg' },
+    },
+    3: {
+      theme: 'cream', shot: '../IMG_3610.png',
+      eyebrow: 'Your turn!', title: 'Pass the phone.<br><em>Beat the clock.</em>',
+      sub: 'A 30-second turn timer keeps the game moving and everyone on their toes.',
+      wheels: [{ size: 1100, left: -540, top: 1350, opacity: .14 }, { size: 800, left: 880, top: 2150, opacity: .12 }],
+      badge: { html: '<div><small>30s</small>turn<br>clock</div>', left: 960, top: 1110, rot: '8deg' },
+    },
+    4: {
+      theme: 'green', feature: true,
+      eyebrow: 'Four rounds + a bonus', title: 'Big words.<br><em>Bigger wins.</em>',
+      sub: 'Buy vowels, solve the board, then go for the mystery envelope.',
+      wheels: [],
+      features: [
+        ['🎉', '100+ themed boards', 'Holidays, seasons &amp; local events'],
+        ['✉️', 'Bonus round', 'Six sealed envelopes up to $100,000'],
+        ['🏆', 'Leaderboard', 'Every game night, saved on device'],
+        ['📴', 'Plays offline', 'No accounts, no sign-ups, no fuss'],
+      ],
+    },
+  };
+
+  const n = Number(new URLSearchParams(location.search).get('slide') || 1);
+  const s = slides[n] || slides[1];
+  const slide = document.createElement('section');
+  slide.className = `slide theme-${s.theme}`;
+  slide.innerHTML = `
+    <div class="copy">
+      <div class="eyebrow">${sparkSvg(34)}<span>${s.eyebrow}</span>${sparkSvg(34)}</div>
+      <h1>${s.title}</h1>
+      <p class="sub">${s.sub}</p>
+    </div>`;
+
+  for (const w of s.wheels) {
+    const d = document.createElement('div');
+    d.className = 'deco-wheel';
+    Object.assign(d.style, { left: `${w.left}px`, top: `${w.top}px`, opacity: w.opacity });
+    d.innerHTML = wheelSvg(w.size, { labels: false, hub: false });
+    slide.append(d);
+  }
+
+  [[70, 330, 64], [1150, 560, 50], [50, 1300, 40], [1180, 1250, 72]].forEach(([x, y, size], i) => {
+    const sp = document.createElement('div');
+    sp.className = 'sparkle';
+    Object.assign(sp.style, { left: `${x}px`, top: `${y}px`, opacity: i % 2 ? .55 : .85 });
+    sp.innerHTML = sparkSvg(size);
+    slide.append(sp);
+  });
+
+  if (s.shot) {
+    const phone = document.getElementById('phone-tpl').content.firstElementChild.cloneNode(true);
+    phone.querySelector('img').src = s.shot;
+    slide.append(phone);
+  }
+
+  if (s.badge) {
+    const b = document.createElement('div');
+    b.className = 'badge';
+    b.innerHTML = s.badge.html;
+    Object.assign(b.style, { left: `${s.badge.left}px`, top: `${s.badge.top}px` });
+    b.style.setProperty('--rot', s.badge.rot);
+    slide.append(b);
+  }
+
+  if (s.feature) {
+    const fw = document.createElement('div');
+    fw.className = 'feature-wheel';
+    fw.innerHTML = wheelSvg(880);
+    slide.append(fw);
+    const list = document.createElement('div');
+    list.className = 'feature-list';
+    list.innerHTML = s.features.map(([icon, title, text]) => `<div class="feature"><div class="icon">${icon}</div><strong>${title}</strong><span>${text}</span></div>`).join('');
+    slide.append(list);
+  }
+
+  document.getElementById('root').append(slide);
+</script>
+</body>
+</html>
