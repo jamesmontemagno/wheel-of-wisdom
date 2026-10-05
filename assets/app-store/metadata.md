@@ -85,31 +85,58 @@ Welcome to Wheel of Wisdom! Spin the wheel, solve original word puzzles and crow
 
 ## Screenshots
 
-Generated from `assets/app-store/screenshots.html` using the device captures in `assets/`.
+### iPhone 6.5" Display — 1284 × 2778
 
-| File | Size | Headline |
+Generated from `screenshots.html` using the device captures in `assets/`.
+
+| File | Headline |
+| --- | --- |
+| `iphone-6.5/01-game-night.png` | Game night in your pocket. |
+| `iphone-6.5/02-spin-the-wheel.png` | Spin it. Win it. |
+| `iphone-6.5/03-pass-the-phone.png` | Pass the phone. Beat the clock. |
+| `iphone-6.5/04-bonus-round.png` | Big words. Bigger wins. |
+
+App Store Connect scales these for smaller iPhones.
+
+### iPad 13" Display — 2064 × 2752
+
+Required because the iOS app declares iPad support (`UIDeviceFamily` 1 and 2 in `Platforms/iOS/Info.plist`). Generated from `screenshots-ipad.html`, framing screens in `captures/ipad/`. Those captures are the web app (the same UI the MAUI app hosts) rendered at the iPad 13" viewport, 1032 × 1376 points @2x, with sample players James, Heather, and Frank.
+
+| File | Screen | Headline |
 | --- | --- | --- |
-| `iphone-6.5/01-game-night.png` | 1284 × 2778 | Game night in your pocket. |
-| `iphone-6.5/02-spin-the-wheel.png` | 1284 × 2778 | Spin it. Win it. |
-| `iphone-6.5/03-pass-the-phone.png` | 1284 × 2778 | Pass the phone. Beat the clock. |
-| `iphone-6.5/04-bonus-round.png` | 1284 × 2778 | Big words. Bigger wins. |
+| `ipad-13/01-big-screen.png` | Lobby | Game night, big-screen style. |
+| `ipad-13/02-spin-the-wheel.png` | Wheel spinning | Spin it. Win it. |
+| `ipad-13/03-pass-it-around.png` | Puzzle board mid-round | Pass it around. Beat the clock. |
+| `ipad-13/04-big-wins.png` | Solved-puzzle celebration | Big words. Bigger wins. |
+| `ipad-13/05-hall-of-fame.png` | History and leaderboard | Every game night, remembered. |
 
-Upload them to the **iPhone 6.5" Display** slot (1284 × 2778 is accepted there; App Store Connect scales them for smaller iPhones). The PNGs are RGB with no alpha channel, as Apple requires.
+All PNGs are RGB with no alpha channel, as Apple requires.
 
-The iOS app also declares iPad support (`UIDeviceFamily` 1 and 2 in `Platforms/iOS/Info.plist`), so App Store Connect will additionally require **iPad 13" Display** screenshots (2064 × 2752 or 2048 × 2732) unless iPad support is removed.
+### Regenerating
 
-To regenerate after editing the template or replacing the captures, serve the repo root and capture each slide with headless Chrome:
+Edit the slide copy in the `slides` object of either template (shared wheel and sparkle art lives in `art.js`), then serve the repo root and capture each slide with headless Chrome:
 
 ```sh
 python3 -m http.server 8799   # from the repo root, in another terminal
+
+# iPhone (4 slides)
 for i in 1 2 3 4; do
   google-chrome --headless=new --hide-scrollbars --force-device-scale-factor=1 \
     --window-size=1284,2778 --virtual-time-budget=5000 \
-    --screenshot=slide-$i.png "http://localhost:8799/assets/app-store/screenshots.html?slide=$i"
+    --screenshot=iphone-$i.png "http://localhost:8799/assets/app-store/screenshots.html?slide=$i"
+done
+
+# iPad (5 slides)
+for i in 1 2 3 4 5; do
+  google-chrome --headless=new --hide-scrollbars --force-device-scale-factor=1 \
+    --window-size=2064,2752 --virtual-time-budget=5000 \
+    --screenshot=ipad-$i.png "http://localhost:8799/assets/app-store/screenshots-ipad.html?slide=$i"
 done
 ```
 
-Chrome's screenshot may include an alpha channel; flatten to RGB (for example `magick slide-1.png -alpha off 01-game-night.png`) before uploading.
+To refresh an iPad screen, run `npm run dev`, open the game in a browser at a 1032 × 1376 viewport with a device pixel ratio of 2 (Chrome DevTools device toolbar works), and save a 2064 × 2752 screenshot over the matching file in `captures/ipad/`.
+
+Chrome's screenshot may include an alpha channel; flatten to RGB (for example `magick iphone-1.png -alpha off 01-game-night.png`) before uploading.
 
 ## App Privacy ("nutrition label")
 
