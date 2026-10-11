@@ -1,0 +1,16 @@
+{
+  "name": "wheel-of-wisdom-hype-video",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "setup": "playwright install chromium",
+    "music": "node scripts/generate-music.mjs",
+    "preview": "node scripts/preview.mjs",
+    "render": "node scripts/render.mjs",
+    "build": "npm run music && npm run render"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.1"
+  }
+}

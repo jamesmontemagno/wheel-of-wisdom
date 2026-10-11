@@ -4,20 +4,36 @@
 <meta charset="utf-8" />
 <title>Wheel of Wisdom – App Store screenshots</title>
 <!--
-  App Store screenshot template (1284 × 2778, iPhone 6.5"/6.7" display).
-  Open with ?slide=1 … ?slide=4 and capture the viewport at exactly 1284 × 2778.
+  App Store screenshot template (1179 × 2556, iPhone portrait).
+  Open with ?slide=1 … ?slide=4 and capture the viewport at exactly 1179 × 2556.
   See assets/app-store/metadata.md for the render command.
 -->
 <style>
   @font-face { font-family: Outfit; src: url('../../src/fonts/outfit-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
   @font-face { font-family: 'DM Sans'; src: url('../../src/fonts/dm-sans-latin-wght-normal.woff2') format('woff2'); font-weight: 100 1000; }
 
-  :root { --ink: #283f34; --green: #284b3b; --orange: #bf482d; --cream: #f8f6ef; }
+  :root {
+    --ink: #283f34;
+    --green: #284b3b;
+    --orange: #bf482d;
+    --cream: #f8f6ef;
+    --canvas-scale-x: calc(1179 / 1284);
+    --canvas-scale-y: calc(2556 / 2778);
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 1284px; height: 2778px; overflow: hidden; }
+  html, body { width: 1179px; height: 2556px; overflow: hidden; }
   body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
 
-  .slide { position: relative; width: 1284px; height: 2778px; overflow: hidden; background: var(--bg); color: var(--fg); }
+  .slide {
+    position: relative;
+    width: 1284px;
+    height: 2778px;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--fg);
+    transform: scale(var(--canvas-scale-x), var(--canvas-scale-y));
+    transform-origin: top left;
+  }
   .slide::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 22px; background: linear-gradient(90deg, #bf482d, #e7ab65 35%, #a8cdbb 70%, #284b3b); z-index: 5; }
 
   .theme-green  { --bg: radial-gradient(120% 70% at 50% 0%, #34604c 0%, #284b3b 55%, #1d382c 100%); --fg: #f8f6ef; --accent: #f1c27d; --sub: #cfe0d4; --chip-bg: #ffffff14; --chip-line: #ffffff2e; }

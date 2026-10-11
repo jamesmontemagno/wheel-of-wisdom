@@ -85,18 +85,26 @@ Welcome to Wheel of Wisdom! Spin the wheel, solve original word puzzles and crow
 
 ## Screenshots
 
-### iPhone 6.5" Display — 1284 × 2778
+### iPhone screenshots — 1179 × 2556
 
 Generated from `screenshots.html` using the device captures in `assets/`.
 
 | File | Headline |
 | --- | --- |
-| `iphone-6.5/01-game-night.png` | Game night in your pocket. |
-| `iphone-6.5/02-spin-the-wheel.png` | Spin it. Win it. |
-| `iphone-6.5/03-pass-the-phone.png` | Pass the phone. Beat the clock. |
-| `iphone-6.5/04-bonus-round.png` | Big words. Bigger wins. |
+| `iphone/01-game-night.png` | Game night in your pocket. |
+| `iphone/02-spin-the-wheel.png` | Spin it. Win it. |
+| `iphone/03-pass-the-phone.png` | Pass the phone. Beat the clock. |
+| `iphone/04-bonus-round.png` | Big words. Bigger wins. |
 
 App Store Connect scales these for smaller iPhones.
+
+Supported iPhone media dimensions:
+
+- App previews: 1920 × 886 or 886 × 1920.
+- App screenshots: 2556 × 1179, 1179 × 2556, 2622 × 1206, or 1206 × 2622.
+
+The 30-second landscape App Store preview is available at
+`launch-video/wheel-of-wisdom-iphone-app-preview-1920x886.mp4`.
 
 ### iPad 13" Display — 2064 × 2752
 
@@ -122,7 +130,7 @@ python3 -m http.server 8799   # from the repo root, in another terminal
 # iPhone (4 slides)
 for i in 1 2 3 4; do
   google-chrome --headless=new --hide-scrollbars --force-device-scale-factor=1 \
-    --window-size=1284,2778 --virtual-time-budget=5000 \
+    --window-size=1179,2556 --virtual-time-budget=5000 \
     --screenshot=iphone-$i.png "http://localhost:8799/assets/app-store/screenshots.html?slide=$i"
 done
 
