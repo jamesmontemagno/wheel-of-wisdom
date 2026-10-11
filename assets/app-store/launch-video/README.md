@@ -4,6 +4,7 @@ The launch package contains two 30-second, music-only videos using repository ar
 
 - `wheel-of-wisdom-iphone-launch-1080p.mp4` — 1920 × 1080 landscape video for social and launch promotion.
 - `wheel-of-wisdom-iphone-app-preview-1920x886.mp4` — 1920 × 886 landscape App Store preview.
+- `wheel-of-wisdom-launch-1600x1200.mp4` — 1600 × 1200 presentation export with the complete widescreen composition over a color-matched backdrop.
 
 Regenerate it from the repository root:
 

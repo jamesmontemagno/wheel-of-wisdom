@@ -8,6 +8,7 @@ export const config = {
   url: 'www.wheelofwisdom.app',
   output: 'assets/app-store/launch-video/wheel-of-wisdom-iphone-launch-1080p.mp4',
   previewOutput: 'assets/app-store/launch-video/wheel-of-wisdom-iphone-app-preview-1920x886.mp4',
+  standardOutput: 'assets/app-store/launch-video/wheel-of-wisdom-launch-1600x1200.mp4',
   music: {
     seed: 42,
     root: 48,

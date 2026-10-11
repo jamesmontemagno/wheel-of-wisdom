@@ -15,6 +15,7 @@ if (!existsSync(music)) throw new Error('build/music.wav is missing. Run npm run
 
 const output = resolve(repoRoot, config.output)
 const previewOutput = resolve(repoRoot, config.previewOutput)
+const standardOutput = resolve(repoRoot, config.standardOutput)
 const duration = totalSeconds()
 const server = await startStaticServer()
 const browser = await chromium.launch()
@@ -59,8 +60,25 @@ try {
     '-movflags', '+faststart', previewOutput,
   ], { stdio: 'inherit' })
   if (crop.status !== 0) throw new Error('App Store preview export failed.')
+
+  const standard = spawnSync('ffmpeg', [
+    '-y', '-loglevel', 'error', '-i', output,
+    '-filter_complex',
+    '[0:v]split=2[background][foreground];' +
+      '[background]scale=1600:1200:force_original_aspect_ratio=increase,crop=1600:1200,' +
+      'boxblur=32:12,eq=brightness=-0.18:saturation=0.85[backdrop];' +
+      '[foreground]scale=1600:900[content];' +
+      '[backdrop][content]overlay=0:150,format=yuv420p[video]',
+    '-map', '[video]', '-map', '0:a',
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', '18',
+    '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
+    '-movflags', '+faststart', standardOutput,
+  ], { stdio: 'inherit' })
+  if (standard.status !== 0) throw new Error('1600x1200 export failed.')
+
   console.log(`rendered ${output}`)
   console.log(`rendered ${previewOutput}`)
+  console.log(`rendered ${standardOutput}`)
 } finally {
   await browser.close()
   await server.close()
