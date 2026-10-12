@@ -188,10 +188,8 @@ function shell(content) {
       <span>A little luck. A lot of wordplay.</span>
       <span class="footer-tagline">Made for your kind of game night <span aria-hidden="true">✦</span></span>
       <section class="legal-notice" aria-label="Legal notices">
-        <span>Wheel of Wisdom is not affiliated with Wheel of Fortune®.</span>
-        <span>© 2026 Califon Productions, Inc. All Rights Reserved.</span>
-        <span>“Wheel of Fortune®” and “America’s Game®” are registered trademarks of Califon Productions, Inc. All Rights Reserved.</span>
-        <span>© 2026 Sony Corporation of America. All Rights Reserved.</span>
+        <span>Wheel of Wisdom is an independent, unofficial game. It is not affiliated with, endorsed by, or sponsored by Wheel of Fortune®, Califon Productions, Inc., or Sony Corporation of America.</span>
+        <span>“Wheel of Fortune®” and “America’s Game®” are registered trademarks of Califon Productions, Inc.</span>
       </section>
     </footer>
     <dialog id="modal" aria-labelledby="dialog-title"></dialog>`
