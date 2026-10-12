@@ -32,7 +32,7 @@ concurrency:
 jobs:
   build-ios:
     name: Required / iOS
-    runs-on: macos-26
+    runs-on: xcode-27
     timeout-minutes: 45
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
