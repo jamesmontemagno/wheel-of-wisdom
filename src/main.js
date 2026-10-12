@@ -184,7 +184,14 @@ function shell(content) {
     ${!game ? `<nav class="lobby-tabs" aria-label="Game sections"><button id="play-tab" aria-pressed="${lobbyPage === 'play'}" class="${lobbyPage === 'play' ? 'selected' : ''}">${icon('spin')} Play</button><button id="history-tab" aria-pressed="${lobbyPage === 'history'}" class="${lobbyPage === 'history' ? 'selected' : ''}">${icon('trophy')} History</button></nav>` : ''}
     <p id="storage-notice" class="storage-notice" role="status">${storageFailed ? 'Local saving is unavailable. New names and results will only last for this visit.' : ''}</p>
     <main id="main">${content}</main>
-    <footer class="site-footer"><span>A little luck. A lot of wordplay.</span><span>Made for your kind of game night <span aria-hidden="true">✦</span></span></footer>
+    <footer class="site-footer">
+      <span>A little luck. A lot of wordplay.</span>
+      <span class="footer-tagline">Made for your kind of game night <span aria-hidden="true">✦</span></span>
+      <section class="legal-notice" aria-label="Legal notices">
+        <span>Wheel of Wisdom is an independent, unofficial game. It is not affiliated with, endorsed by, or sponsored by Wheel of Fortune®, Califon Productions, Inc., or Sony Corporation of America.</span>
+        <span>“Wheel of Fortune®” and “America’s Game®” are registered trademarks of Califon Productions, Inc.</span>
+      </section>
+    </footer>
     <dialog id="modal" aria-labelledby="dialog-title"></dialog>`
   document.querySelector('#help').onclick = showHelp
   document.querySelector('#sound-toggle').onclick = () => {
