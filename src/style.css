@@ -141,8 +141,8 @@ h1, h2, h3, .brand { font-family: 'Outfit', sans-serif; }
 .how-strip strong { display: block; font-size: 11px; font-weight: 650; }
 .how-strip small { display: block; margin-top: 5px; font-size: 10px; color: var(--muted); }
 .site-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; padding: 24px 0; font-size: 9px; color: #818676; }
-.site-footer > span:last-of-type { display: flex; align-items: center; gap: 9px; }
-.site-footer > span:last-of-type > span { color: #a88557; font-size: 16px; }
+.site-footer > .footer-tagline { display: flex; align-items: center; gap: 9px; }
+.footer-tagline > span { color: #a88557; font-size: 16px; }
 .legal-notice { flex-basis: 100%; color: #818676; font-size: 9px; line-height: 1.6; text-align: center; }
 
 /* The game keeps its board, keyboard and controls together on portrait screens. */
