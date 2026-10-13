@@ -39,6 +39,8 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       PROJECT_PATH: mobile/WheelOfWisdom.Maui/WheelOfWisdom.Maui.csproj
       TARGET_FRAMEWORK: net10.0-ios
+      CATALYST_TARGET_FRAMEWORK: net10.0-maccatalyst
+      CATALYST_RUNTIME_ID: maccatalyst-arm64
       RUNTIME_ID: ios-arm64
       APP_IDENTIFIER: com.refractored.wheelofwisdom
 
@@ -57,6 +59,7 @@ jobs:
               - 'public/**'
               - 'src/**'
               - 'wheel-of-wisdom-mobile.slnx'
+              - 'global.json'
               - '.github/workflows/maui-ios.yml'
 
       - name: Validate workflow inputs
@@ -75,7 +78,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' || steps.changes.outputs.ios == 'true' }}
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '10.0.401'
 
       - name: Restore .NET workloads
         if: ${{ github.event_name != 'pull_request' || steps.changes.outputs.ios == 'true' }}
@@ -92,6 +95,14 @@ jobs:
           -c Debug
           -f "${{ env.TARGET_FRAMEWORK }}"
           -p:RuntimeIdentifier=iossimulator-arm64
+
+      - name: Build Mac Catalyst app
+        if: ${{ (github.event_name != 'pull_request' || steps.changes.outputs.ios == 'true') && (github.event_name == 'pull_request' || !inputs.build_release) }}
+        run: >-
+          dotnet build "${{ env.PROJECT_PATH }}"
+          -c Debug
+          -f "${{ env.CATALYST_TARGET_FRAMEWORK }}"
+          -p:RuntimeIdentifier="${{ env.CATALYST_RUNTIME_ID }}"
 
       - name: No relevant changes
         if: ${{ github.event_name == 'pull_request' && steps.changes.outputs.ios != 'true' }}
