@@ -43,10 +43,10 @@ This repo also includes a native .NET MAUI wrapper at `mobile/WheelOfWisdom.Maui
 - Completed game history is stored as validated, one-row-per-game records in a native SQLite database under `FileSystem.AppDataDirectory`.
 - Browser builds continue using local storage, while the HybridWebView waits for native Preferences and SQLite history before initializing the lobby. Existing HybridWebView local-storage history is migrated into SQLite on launch.
 
-Install the .NET 10 MAUI workload, then build a target from the repo root:
+Builds use the .NET SDK and workload set pinned in `global.json`. Apple targets require Xcode 27.0; the Mac Catalyst deployment target is 17.0 (macOS 14). Restore the project workloads, then build a target from the repo root:
 
 ```sh
-dotnet workload install maui
+dotnet workload restore mobile/WheelOfWisdom.Maui/WheelOfWisdom.Maui.csproj
 dotnet build mobile/WheelOfWisdom.Maui/WheelOfWisdom.Maui.csproj -f net10.0-android
 ```
 
@@ -55,7 +55,7 @@ dotnet build mobile/WheelOfWisdom.Maui/WheelOfWisdom.Maui.csproj -f net10.0-andr
 - `.github/workflows/ci.yml` runs `npm test` and `npm run build` on pull requests and non-`main` branch pushes.
 - `.github/workflows/deploy.yml` tests, builds, and publishes `dist/` to GitHub Pages on every push to `main` (and on demand via *Run workflow*).
 - `.github/workflows/maui-android.yml` builds the Android app for relevant pull requests. A manual run can build a signed AAB when `build_release` is enabled.
-- `.github/workflows/maui-ios.yml` builds the iOS simulator app for relevant pull requests. A manual run can build a signed IPA and optionally upload it to TestFlight.
+- `.github/workflows/maui-ios.yml` builds the iOS simulator and Mac Catalyst apps for relevant pull requests. A manual run can build a signed IPA and optionally upload it to TestFlight.
 
 Signed Android releases require the `ANDROID_PLAYSTORE_KEYSTORE`, `ANDROID_PLAYSTORE_KEYSTORE_PASSWORD`, `ANDROID_PLAYSTORE_KEY_ALIAS`, and `ANDROID_PLAYSTORE_KEY_PASSWORD` repository secrets. Signed iOS releases use `APPSTORE_CERTIFICATE_P12`, `APPSTORE_CERTIFICATE_P12_PASSWORD`, `APPLE_IOS_APPSTORE_PROFILE`, and `APPSTORE_CODESIGN_KEY`; TestFlight additionally uses `APPLE_REFRACTORED_ISSUER_ID`, `APPLE_REFRACTORED_KEY_ID`, and `APPLE_REFRACTORED_P8_KEY`.
 
